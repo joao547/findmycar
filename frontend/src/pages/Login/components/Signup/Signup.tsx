@@ -1,7 +1,8 @@
+import { MultiStep } from '../MultiStep';
 export function Signup() {
   return (
-    <div>
-      <h1>Signup component</h1>
+    <div className='w-full h-full p-4 mt-24'>
+      <MultiStep />
     </div>
   );
 }
