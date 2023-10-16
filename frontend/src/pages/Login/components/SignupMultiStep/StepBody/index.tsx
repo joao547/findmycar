@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Identification } from '../Identification';
-import { Register } from '../Register';
-import { SendComponent } from '../Send';
+import { IdentificationStep } from '../IdentificationStep';
+import { RegisterStep } from '../RegisterStep';
+import { SendStep } from '../SendStep';
 
 export type MultiStepFields = {
   data: {
@@ -18,7 +18,7 @@ type StepBodyProps = {
   handlerChangeStep: (value: React.SetStateAction<number>) => void;
 };
 
-const stepsBody = [Identification, Register, SendComponent];
+const stepsBody = [IdentificationStep, RegisterStep, SendStep];
 
 const multiStepData = {
   name: '',
@@ -42,16 +42,14 @@ export function StepBody({ currentStep, handlerChangeStep }: StepBodyProps) {
   const CurrentStepBody = stepsBody[currentStep];
 
   return (
-    <form className='flex flex-col'>
-      <div className='h-[30.5rem]'>
-        <span className='block text-sm text-gray-400 mt-10'>
-          passo {currentStep + 1}/3
-        </span>
-        <CurrentStepBody data={data} updateFieldHandler={updateFieldHandler} />
-        <hr className='mt-8' />
-      </div>
+    <form className='flex flex-col h-2/3 gap-4'>
+      <span className='block text-sm text-gray-400 mt-8'>
+        passo {currentStep + 1}/3
+      </span>
 
-      <div className='flex gap-4 ml-auto mt-8'>
+      <CurrentStepBody data={data} updateFieldHandler={updateFieldHandler} />
+
+      <div className='flex gap-4 ml-auto mt-auto'>
         <button
           type='button'
           onClick={() => handlerChangeStep((prev) => Math.max(prev - 1, 0))}

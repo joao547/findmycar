@@ -6,11 +6,11 @@ import { useState } from 'react';
 
 const stepDescription = ['Identificação', 'Cadastro', 'Envio'];
 
-export function MultiStep() {
+export function SignupMultiStep() {
   const [currentStep, setCurrentStep] = useState(0);
 
   return (
-    <div className='w-full h-full flex flex-col'>
+    <div className='mt-24 w-full h-full flex flex-col p-4'>
       <StepsWrapper>
         {Array.from({ length: 3 }, (_, i) => i).map((step) => (
           <Step

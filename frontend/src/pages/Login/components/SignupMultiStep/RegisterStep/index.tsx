@@ -7,7 +7,7 @@ import {
 import { TextInput } from '../../../../../components';
 import { MultiStepFields } from '../StepBody';
 
-export function Register({ data, updateFieldHandler }: MultiStepFields) {
+export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
   return (
     <>
       <h1 className='text-3xl font-bold mt-4'>Cadastro</h1>

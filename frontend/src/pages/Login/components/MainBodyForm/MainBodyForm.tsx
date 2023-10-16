@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Authentication } from '../Authentication/Authentication';
-import { Signup } from '../Signup/Signup';
+import { SignupMultiStep } from '../SignupMultiStep';
 
 export function MainBodyForm() {
   const [formType, setFormType] = useState<'login' | 'signup'>('login');
@@ -10,5 +10,5 @@ export function MainBodyForm() {
     return <Authentication handleCreateAccount={setFormType} />;
   }
 
-  return <Signup />;
+  return <SignupMultiStep />;
 }
