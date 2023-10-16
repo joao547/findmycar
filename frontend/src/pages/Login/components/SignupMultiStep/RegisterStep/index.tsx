@@ -8,9 +8,25 @@ import { TextInput } from '../../../../../components';
 import { MultiStepFields } from '../StepBody';
 
 export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
+  if (data.type === 'consultant') {
+    return (
+      <>
+        <h1 className='text-3xl mt-4 flex items-center gap-2'>
+          Cadastro{' '}
+          <span className='text-gray-600 font-light text-2xl'>
+            &gt; Consultor
+          </span>
+        </h1>
+        <fieldset className='flex flex-col gap-4 mt-8' />
+      </>
+    );
+  }
   return (
     <>
-      <h1 className='text-3xl font-bold mt-4'>Cadastro</h1>
+      <h1 className='text-3xl mt-4 flex items-center gap-2'>
+        Cadastro{' '}
+        <span className='text-gray-600 font-light text-2xl'>&gt; Cliente</span>
+      </h1>
       <fieldset className='flex flex-col gap-4 mt-8'>
         <TextInput.layout>
           <TextInput.icon Icon={User} />

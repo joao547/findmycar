@@ -9,6 +9,7 @@ export type MultiStepFields = {
     email: string;
     password: string;
     site: string;
+    type: string;
   };
   updateFieldHandler: (key: string, value: string) => void;
 };
@@ -25,6 +26,7 @@ const multiStepData = {
   email: '',
   password: '',
   site: '',
+  type: '',
 };
 
 export function StepBody({ currentStep, handlerChangeStep }: StepBodyProps) {
