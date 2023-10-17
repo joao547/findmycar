@@ -1,16 +1,31 @@
-import { Check } from '@phosphor-icons/react';
+import { CaretLeft, Check, TagChevron } from '@phosphor-icons/react';
 import { Step } from './Step';
 import { StepsWrapper } from './StepsWrapper';
 import { StepBody } from './StepBody';
 import { useState } from 'react';
 
+type SignupMultiStepProps = {
+  handleAuthenticateUser: (
+    value: React.SetStateAction<'login' | 'signup'>,
+  ) => void;
+};
+
 const stepDescription = ['Identificação', 'Cadastro', 'Envio'];
 
-export function SignupMultiStep() {
+export function SignupMultiStep({
+  handleAuthenticateUser,
+}: SignupMultiStepProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
   return (
-    <div className='mt-24 w-full h-full flex flex-col p-4'>
+    <div className='w-full h-full flex flex-col p-4'>
+      <button>
+        <CaretLeft
+          size={32}
+          className='mt-12'
+          onClick={() => handleAuthenticateUser('login')}
+        />
+      </button>
       <StepsWrapper>
         {Array.from({ length: 3 }, (_, i) => i).map((step) => (
           <Step

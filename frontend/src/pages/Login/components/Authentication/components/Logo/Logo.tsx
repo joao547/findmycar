@@ -1,4 +1,4 @@
-import logoImg from '../../../../assets/findmycar_logo.png';
+import logoImg from '../../../../../../assets/findmycar_logo.png';
 
 export function Logo() {
   return (

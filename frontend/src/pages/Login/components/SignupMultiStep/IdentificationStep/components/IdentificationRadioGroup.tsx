@@ -17,7 +17,7 @@ export function IdentificationRadioGroup({
           className='w-full h-full 
           border rounded-xl shadow-xl flex flex-col'
         >
-          <div className='w-full h-4/6 flex flex-col items-center mt-10 p-4'>
+          <div className='w-full h-[18.75rem] flex flex-col items-center mt-10 p-4'>
             <User className='w-32 h-32 text-gray-400' />
             <h1 className='font-medium text-xl mt-4 text-center'>Cliente</h1>
             <p className='text-center font-light mt-4'>
@@ -35,7 +35,7 @@ export function IdentificationRadioGroup({
           className='w-full h-full 
           border rounded-xl shadow-xl flex flex-col'
         >
-          <div className='w-full h-4/6 flex flex-col items-center mt-10 p-4'>
+          <div className='w-full h-[18.75rem] flex flex-col items-center mt-10 p-4'>
             <IdentificationBadge className='w-32 h-32 text-gray-400' />
             <h1 className='font-medium text-xl mt-4 text-center'>Consultor</h1>
             <p className='text-center font-light mt-4'>

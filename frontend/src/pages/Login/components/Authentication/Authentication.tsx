@@ -1,5 +1,5 @@
 import { TextInput } from '../../../../components';
-import { Logo } from '../Logo/Logo';
+import { Logo } from './components/Logo/Logo';
 
 import { Lock } from '@phosphor-icons/react/dist/ssr/Lock';
 import { UserCircle } from '@phosphor-icons/react';

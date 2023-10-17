@@ -10,5 +10,5 @@ export function MainBodyForm() {
     return <Authentication handleCreateAccount={setFormType} />;
   }
 
-  return <SignupMultiStep />;
+  return <SignupMultiStep handleAuthenticateUser={setFormType} />;
 }

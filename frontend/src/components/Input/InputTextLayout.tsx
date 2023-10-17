@@ -8,7 +8,7 @@ export function InputTextLayout({
   children,
 }: InputTextLayoutProps): JSX.Element {
   return (
-    <div className='flex gap-2 border-b-2 p-1 items-center shadow-md'>
+    <div className='flex gap-2 border rounded-xl p-1 items-center shadow-xl'>
       {children}
     </div>
   );
