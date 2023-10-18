@@ -30,7 +30,6 @@ public class LoginController {
             .unauthenticated(credencialsDTO.getEmail(), credencialsDTO.getPassword());
         Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequests);
 
-        System.out.println("Oi");
         Usuario usuario = (Usuario ) authenticationResponse.getPrincipal();
         String token = jwtUtil.generateToken(usuario.getEmail());
 
