@@ -1,6 +1,7 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
 
+import br.edu.ifpe.tads.findmycar.controller.exceptions.BadRequestException;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
 import br.edu.ifpe.tads.findmycar.infra.security.AuthenticationSucessfull;
 import br.edu.ifpe.tads.findmycar.infra.security.CredencialsDTO;
@@ -18,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
-public class LoginController {
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
     private final UsuarioService usuarioService;
 
-    public LoginController(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UsuarioService usuarioService) {
+    public AuthController(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UsuarioService usuarioService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
@@ -45,7 +46,11 @@ public class LoginController {
 
     @PostMapping("/criar")
     public ResponseEntity registrarUsuario(@Valid @RequestBody UsuarioDto dto){
-        this.usuarioService.criarUsuario(dto);
+        try {
+            this.usuarioService.criarUsuario(dto);
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

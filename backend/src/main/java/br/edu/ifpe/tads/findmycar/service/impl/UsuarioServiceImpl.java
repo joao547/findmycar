@@ -1,8 +1,10 @@
 package br.edu.ifpe.tads.findmycar.service.impl;
 
+import br.edu.ifpe.tads.findmycar.controller.exceptions.BadRequestException;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
 import br.edu.ifpe.tads.findmycar.entity.Cliente;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
+import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
 import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
@@ -24,17 +26,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void criarUsuario(UsuarioDto dto) {
-        if (isConsultor(dto)){
+    public void criarUsuario(UsuarioDto dto) throws BadRequestException {
+        if (TipoUsuario.CONSULTOR.equals(dto.getTipo())){
             criarConsultor(dto);
         }
-        else {
+        else if(TipoUsuario.CLIENTE.equals(dto.getTipo())){
             criarCliente(dto);
         }
-    }
-
-    private boolean isConsultor(UsuarioDto dto){
-        return dto.getAreaDeAtuacao() != null && dto.getDisponibilidade() != null && dto.getPrecoDoServico() != null;
+        else {
+            throw new BadRequestException("Tipo de usuário não pode ser aceito");
+        }
     }
 
     private void criarConsultor(UsuarioDto dto){
