@@ -39,7 +39,7 @@ public class WebSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers(HttpMethod.POST, "/login").permitAll()
+                authorize.requestMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
                 .anyRequest().authenticated()
             );
 

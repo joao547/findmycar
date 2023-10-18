@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "cliente")
 public class Cliente extends Usuario{
     @OneToMany(mappedBy = "cliente")
     private Set<Consulta> consultas;
