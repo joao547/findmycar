@@ -8,25 +8,28 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 
 @Component
 
 public class JWTUtil {
 
     @Value("${spring.jwt.secret}")
-    private String secret = "superHiperMegaTopSecretMessageAquiHereComAindaMaisCaracteresAmigos";
+    private String secret;
 
     @Value("${spring.jwt.expiration}")
-    private Long expiration = 2000000l;
+    private Long expiration;
 
     public String generateToken(String email) {
         try {
+            Date date = new Date(System.currentTimeMillis() + expiration);
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withClaim("email", email)
+                    .withExpiresAt(date)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            // Invalid claims or signing key
             throw new RuntimeException("Failed to create JWT token");
         }
     }
@@ -36,7 +39,6 @@ public class JWTUtil {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim("email").asString();
         } catch (JWTDecodeException exception) {
-            // Invalid token or missing 'email' claim
             throw new RuntimeException("Failed to decode JWT token");
         }
     }
@@ -47,17 +49,7 @@ public class JWTUtil {
             JWT.require(algorithm).build().verify(token);
             return true;
         } catch (Exception e) {
-            // Token verification failed
             return false;
         }
-    }
-    public static void main(String[] args) {
-        JWTUtil jwtUtil = new JWTUtil();
-
-        String token = jwtUtil.generateToken("rennanprysthon");
-
-        String decrypted = jwtUtil.getEmailFromToken(token);
-
-        System.out.println(decrypted);
     }
 }
