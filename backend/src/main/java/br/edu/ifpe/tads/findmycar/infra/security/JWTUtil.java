@@ -1,48 +1,63 @@
 package br.edu.ifpe.tads.findmycar.infra.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 
 @Component
 
 public class JWTUtil {
 
     @Value("${spring.jwt.secret}")
-    private String secret;
+    private String secret = "superHiperMegaTopSecretMessageAquiHereComAindaMaisCaracteresAmigos";
 
     @Value("${spring.jwt.expiration}")
-    private Long expiration;
+    private Long expiration = 2000000l;
 
-    public String generateToken(String username) {
-        Date today = new Date(System.currentTimeMillis());
-        Date expirationDate = new Date(System.currentTimeMillis() + expiration);
-        return Jwts.builder()
-            .subject(username)
-            .expiration(expirationDate) //a java.util.Date
-            .issuedAt(today)
-            .compact();
+    public String generateToken(String email) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withClaim("email", email)
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            // Invalid claims or signing key
+            throw new RuntimeException("Failed to create JWT token");
+        }
     }
 
-    public boolean tokenValido(String token) {
-        SecretKey testKey = Jwts.SIG.HS512.key().build();
-        Jwt<?,?> jwt;
+    public String getEmailFromToken(String token) {
         try {
-            jwt = Jwts.parser()
-                    .decryptWith(testKey) // <---- or a Password from Keys.password(charArray)
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("email").asString();
+        } catch (JWTDecodeException exception) {
+            // Invalid token or missing 'email' claim
+            throw new RuntimeException("Failed to decode JWT token");
+        }
+    }
 
-                    .build()
-                    .parseEncryptedClaims(token);
-
-            System.out.println((jwt.getPayload()));
-        } catch (JwtException ex) {
+    public boolean isTokenValid(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            JWT.require(algorithm).build().verify(token);
+            return true;
+        } catch (Exception e) {
+            // Token verification failed
             return false;
         }
+    }
+    public static void main(String[] args) {
+        JWTUtil jwtUtil = new JWTUtil();
 
-        return false;
+        String token = jwtUtil.generateToken("rennanprysthon");
+
+        String decrypted = jwtUtil.getEmailFromToken(token);
+
+        System.out.println(decrypted);
     }
 }

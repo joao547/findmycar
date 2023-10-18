@@ -11,5 +11,5 @@ spring:
     hibernate:
       ddl-auto: create
   jwt:
-    secret: dsfadsf
+    secret: superHiperMegaTopSecretMessageAquiHereComAindaMaisCaracteresAmigos
     expiration: 20000
