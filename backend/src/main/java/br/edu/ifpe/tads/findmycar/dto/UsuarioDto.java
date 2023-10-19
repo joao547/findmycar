@@ -4,6 +4,7 @@ import br.edu.ifpe.tads.findmycar.annotations.Conditional;
 import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Conditional(selected = "tipo", values = {"consultor"}, required = {"precoDoServico", "areaDeAtuacao", "disponibilidade"})
@@ -21,7 +22,7 @@ public class UsuarioDto {
     @Size(min = 8, message = "Senha deve ter ao menos 8 caracteres")
     private String senha;
 
-    @NotEmpty
+    @NotNull
     private TipoUsuario tipo;
 
     private Double precoDoServico;

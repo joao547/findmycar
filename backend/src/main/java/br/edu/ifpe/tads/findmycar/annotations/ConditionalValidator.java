@@ -1,11 +1,11 @@
 package br.edu.ifpe.tads.findmycar.annotations;
 
 
+import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -27,20 +27,22 @@ public class ConditionalValidator implements ConstraintValidator<Conditional, Ob
 
     @Override
     public boolean isValid(Object objectToValidate, ConstraintValidatorContext context) {
-        Boolean valid = true;
+        boolean validValue;
+        boolean isValid = true;
         BeanWrapperImpl wrapper = new BeanWrapperImpl(objectToValidate);
-        Object actualValue = wrapper.getPropertyValue(selected);
-        if (Arrays.asList(values).contains(actualValue)) {
+        TipoUsuario actualValue = (TipoUsuario) wrapper.getPropertyValue(selected);
+        if (actualValue != null && Arrays.asList(values).contains(actualValue.getName())) {
             for (String propName : required) {
                 Object requiredValue = wrapper.getPropertyValue(propName);
-                valid = requiredValue != null && !isEmpty(requiredValue);
+                validValue = requiredValue != null && !isEmpty(requiredValue);
                 System.out.println("value: " + "" + requiredValue);
-                if (!valid) {
+                if (!validValue) {
+                    isValid = false;
                     context.disableDefaultConstraintViolation();
                     context.buildConstraintViolationWithTemplate(message).addPropertyNode(propName).addConstraintViolation();
                 }
             }
         }
-        return valid;
+        return isValid;
     }
 }

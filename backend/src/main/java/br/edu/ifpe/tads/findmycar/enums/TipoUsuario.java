@@ -7,6 +7,10 @@ public enum TipoUsuario {
     public final String name;
 
     TipoUsuario(String name){
-        this.name = name;
+        this.name = name.toLowerCase();
+    }
+
+    public String getName() {
+        return name;
     }
 }
