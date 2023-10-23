@@ -1,4 +1,4 @@
-import { CaretLeft, Check, TagChevron } from '@phosphor-icons/react';
+import { CaretLeft, Check } from '@phosphor-icons/react';
 import { Step } from './Step';
 import { StepsWrapper } from './StepsWrapper';
 import { StepBody } from './StepBody';

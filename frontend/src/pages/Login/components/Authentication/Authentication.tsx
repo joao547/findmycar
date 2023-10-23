@@ -3,6 +3,8 @@ import { Logo } from './components/Logo/Logo';
 
 import { Lock } from '@phosphor-icons/react/dist/ssr/Lock';
 import { UserCircle } from '@phosphor-icons/react';
+import { useLogin } from '../../data/useLogin';
+import { FormEvent } from 'react';
 
 type AuthenticationProps = {
   handleCreateAccount: (
@@ -11,18 +13,35 @@ type AuthenticationProps = {
 };
 
 export function Authentication({ handleCreateAccount }: AuthenticationProps) {
+  const { makeLogin } = useLogin();
+
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get('email')?.toString() || '';
+    const password = formData.get('password')?.toString() || '';
+
+    makeLogin({
+      email,
+      password,
+    });
+  };
   return (
     <div className='p-4 mt-24'>
       <Logo />
-      <form className='flex flex-col gap-8 mt-8'>
+      <form className='flex flex-col gap-8 mt-8' onSubmit={handleLogin}>
         <TextInput.layout>
           <TextInput.icon Icon={UserCircle} />
-          <TextInput.inputText type='email' placeholder='Email' />
+          <TextInput.inputText name='email' type='email' placeholder='Email' />
         </TextInput.layout>
 
         <TextInput.layout>
           <TextInput.icon Icon={Lock} />
-          <TextInput.inputText type='password' placeholder='Password' />
+          <TextInput.inputText
+            name='password'
+            type='password'
+            placeholder='Password'
+          />
         </TextInput.layout>
 
         <div className='flex items-center'>
