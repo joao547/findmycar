@@ -5,6 +5,7 @@ import { Lock } from '@phosphor-icons/react/dist/ssr/Lock';
 import { UserCircle } from '@phosphor-icons/react';
 import { useLogin } from '../../data/useLogin';
 import { FormEvent } from 'react';
+import useAuth from '../../data/useAuth';
 
 type AuthenticationProps = {
   handleCreateAccount: (
@@ -13,18 +14,21 @@ type AuthenticationProps = {
 };
 
 export function Authentication({ handleCreateAccount }: AuthenticationProps) {
-  const { makeLogin } = useLogin();
+  const { handleLogin: makeLogin } = useAuth();
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email')?.toString() || '';
     const password = formData.get('password')?.toString() || '';
 
-    makeLogin({
-      email,
-      password,
-    });
+    try {
+      const data = await makeLogin(email, password);
+      console.log({ data });
+      alert('login successful');
+    } catch (err) {
+      alert(err);
+    }
   };
   return (
     <div className='p-4 mt-24'>

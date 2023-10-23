@@ -13,11 +13,13 @@ const useLogin = () => {
         method: 'POST',
         body,
         headers: {
-          "Content-Type": "application/json;charset=UTF-8"
+          'Content-Type': 'application/json;charset=UTF-8',
         },
       });
 
-      console.log({ response });
+      const data = await response.json();
+
+      console.log({ data });
     } catch (err) {
       console.log(err);
     }
