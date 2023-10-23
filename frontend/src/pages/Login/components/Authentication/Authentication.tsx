@@ -1,11 +1,12 @@
 import { TextInput } from '../../../../components';
 import { Logo } from './components/Logo/Logo';
+import useAuth from '../../data/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 import { Lock } from '@phosphor-icons/react/dist/ssr/Lock';
 import { UserCircle } from '@phosphor-icons/react';
-import { useLogin } from '../../data/useLogin';
 import { FormEvent } from 'react';
-import useAuth from '../../data/useAuth';
+import { toast } from 'react-toastify';
 
 type AuthenticationProps = {
   handleCreateAccount: (
@@ -14,26 +15,31 @@ type AuthenticationProps = {
 };
 
 export function Authentication({ handleCreateAccount }: AuthenticationProps) {
-  const { handleLogin: makeLogin } = useAuth();
+  const navigate = useNavigate();
+  const { handleLogin } = useAuth();
 
-  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+  async function onLoginAction(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email')?.toString() || '';
     const password = formData.get('password')?.toString() || '';
 
-    try {
-      const data = await makeLogin(email, password);
-      console.log({ data });
-      alert('login successful');
-    } catch (err) {
-      alert(err);
+    const { token } = await toast.promise(handleLogin(email, password), {
+      success: 'Login successful',
+      pending: 'loading...',
+      error: 'Login failed',
+    });
+
+    if (token) {
+      localStorage.setItem('@token', token);
+      navigate('/home');
     }
-  };
+  }
   return (
     <div className='p-4 mt-24'>
       <Logo />
-      <form className='flex flex-col gap-8 mt-8' onSubmit={handleLogin}>
+      <form className='flex flex-col gap-8 mt-8' onSubmit={onLoginAction}>
         <TextInput.layout>
           <TextInput.icon Icon={UserCircle} />
           <TextInput.inputText name='email' type='email' placeholder='Email' />

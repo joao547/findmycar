@@ -1,7 +1,16 @@
-import { Routes } from './routes/routes';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { router } from './routes/routes';
+import { RouterProvider } from 'react-router-dom';
 
 const App = () => {
-  return <Routes />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 };
 
 export default App;
