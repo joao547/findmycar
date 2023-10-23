@@ -16,7 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+@CrossOrigin("http://127.0.0.1:5173")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -41,7 +41,9 @@ public class AuthController {
         User usuario = (User) authenticationResponse.getPrincipal();
         String token = jwtUtil.generateToken(usuario.getUsername());
 
-        return ResponseEntity.ok(new AuthenticationSucessfull(token));
+        AuthenticationSucessfull authenticationSucessfull = new AuthenticationSucessfull(token);
+
+        return ResponseEntity.ok(authenticationSucessfull);
     }
 
     @PostMapping("/criar")

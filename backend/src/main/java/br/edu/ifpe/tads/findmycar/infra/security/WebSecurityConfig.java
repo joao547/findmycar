@@ -2,15 +2,16 @@ package br.edu.ifpe.tads.findmycar.infra.security;
 
 import br.edu.ifpe.tads.findmycar.entity.Usuario;
 import br.edu.ifpe.tads.findmycar.repository.UsuarioRepository;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -20,13 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebMvc
 public class WebSecurityConfig {
     private final UsuarioRepository usuarioRepository;
     private final JWTUtil jwtUtil;
@@ -41,10 +44,31 @@ public class WebSecurityConfig {
 
 
     @Bean
+    public FilterRegistrationBean corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration configAutenticacao = new CorsConfiguration();
+        configAutenticacao.setAllowCredentials(true);
+        configAutenticacao.addAllowedOriginPattern("**");
+        configAutenticacao.addAllowedHeader("Authorization");
+        configAutenticacao.addAllowedHeader("Content-Type");
+        configAutenticacao.addAllowedHeader("Accept");
+        configAutenticacao.addAllowedMethod("POST");
+        configAutenticacao.addAllowedMethod("GET");
+        configAutenticacao.addAllowedMethod("DELETE");
+        configAutenticacao.addAllowedMethod("PUT");
+        configAutenticacao.addAllowedMethod("OPTIONS");
+        configAutenticacao.setMaxAge(3600L);
+        source.registerCorsConfiguration("/**", configAutenticacao); // Global para todas as URLs da aplicação
+
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
+    }
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-            .cors(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authorize) ->
                 authorize.requestMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
@@ -52,7 +76,6 @@ public class WebSecurityConfig {
             );
 
         http.addFilter(new JWTAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil, userDetailsService()));
-        http.addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil));
 
         return http.build();
     }
