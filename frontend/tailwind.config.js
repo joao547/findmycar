@@ -2,7 +2,11 @@
 export default {
   content: ['./src/**/*.{jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        app: 'url(src/assets/car.png)',
+      },
+    },
   },
   plugins: [],
 };
