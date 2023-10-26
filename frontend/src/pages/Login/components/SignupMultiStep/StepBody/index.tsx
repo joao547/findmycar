@@ -4,20 +4,26 @@ import { IdentificationStep } from '../IdentificationStep';
 import { RegisterStep } from '../RegisterStep';
 import { SendStep } from '../SendStep';
 import { StepActions } from '../StepActions';
+import { toast } from 'react-toastify';
+import useLogin from '../../../data/useLogin';
 
+export type MultiStepData = {
+  name: string;
+  email: string;
+  senha: string;
+  tipo: string;
+  precoDoServico: number;
+  areaDeAtuacao: string;
+  disponibilidade: string;
+};
 export type MultiStepFields = {
-  data: {
-    name: string;
-    email: string;
-    password: string;
-    site: string;
-    type: string;
-  };
+  data: MultiStepData;
   updateFieldHandler: (key: string, value: string) => void;
 };
 
 type StepBodyProps = {
   currentStep: number;
+  handlerChangeForm: (value: React.SetStateAction<'login' | 'signup'>) => void;
   handlerChangeStep: (value: React.SetStateAction<number>) => void;
 };
 
@@ -26,12 +32,19 @@ const stepsBody = [IdentificationStep, RegisterStep, SendStep];
 const multiStepData = {
   name: '',
   email: '',
-  password: '',
-  site: '',
-  type: '',
+  senha: '',
+  tipo: '',
+  precoDoServico: 0,
+  areaDeAtuacao: '',
+  disponibilidade: '',
 };
 
-export function StepBody({ currentStep, handlerChangeStep }: StepBodyProps) {
+export function StepBody({
+  currentStep,
+  handlerChangeStep,
+  handlerChangeForm,
+}: StepBodyProps) {
+  const { handleCreateUser } = useLogin();
   const [data, setData] = useState(multiStepData);
 
   function updateFieldHandler(key: string, value: string) {
@@ -43,9 +56,19 @@ export function StepBody({ currentStep, handlerChangeStep }: StepBodyProps) {
     });
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    alert('Enviando...');
+    try {
+      await toast.promise(handleCreateUser(data), {
+        success: 'Created successful',
+        pending: 'loading...',
+        error: 'Error creating user',
+      });
+
+      handlerChangeForm('login');
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const CurrentStepBody = stepsBody[currentStep];

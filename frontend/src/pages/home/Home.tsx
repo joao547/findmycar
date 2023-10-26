@@ -1,16 +1,25 @@
-import { Loading } from './components/Loading';
-import { useGithubInfo } from './data/useGithubInfo';
+import jwt_decode from 'jwt-decode';
+import { useEffect, useState } from 'react';
+
+type User = {
+  email: string;
+  exp: number;
+};
 
 export const Home = () => {
-  const { isLoading, data } = useGithubInfo();
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const [userToken, setUserToken] = useState<User>();
+  useEffect(() => {
+    const token = localStorage.getItem('@token');
+    if (token) {
+      const decode = jwt_decode(token);
+      setUserToken(decode as User);
+    }
+  }, []);
 
   return (
     <main>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <h1>Bem vindo</h1>
+      <p>{userToken?.email}</p>
     </main>
   );
 };

@@ -1,33 +1,46 @@
-const useLogin = () => {
-  const makeLogin = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    try {
-      const body = JSON.stringify({ email, password });
+import { api } from '../../../service/api';
+import { MultiStepData } from '../components/SignupMultiStep/StepBody';
 
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        body,
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-        },
+export const mapRequestBody = (body: MultiStepData) => {
+  const result = {
+    nome: body.name,
+    email: body.email,
+    senha: body.senha,
+    tipo: body.tipo,
+    precoDoServico: body.precoDoServico ? body.precoDoServico : undefined,
+    areaDeAtuacao: body.areaDeAtuacao ? body.areaDeAtuacao : undefined,
+    disponibilidade: body.disponibilidade ? body.disponibilidade : undefined,
+  };
+
+  return result;
+};
+
+function useLogin() {
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const { data } = await api.post('/api/auth/login', {
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      console.log({ data });
+      return data;
     } catch (err) {
-      console.log(err);
+      throw new Error(err as string);
     }
   };
 
-  return {
-    makeLogin,
-  };
-};
+  const handleCreateUser = async (user: MultiStepData) => {
+    try {
+      const body = mapRequestBody(user);
+      const { data } = await api.post('/api/auth/criar', body);
 
-export { useLogin };
+      return data;
+    } catch (err) {
+      throw new Error(err as string);
+    }
+  };
+
+  return { handleCreateUser, handleLogin };
+}
+
+export default useLogin;
