@@ -9,10 +9,10 @@ export function IdentificationRadioGroup({
 }: IdentificationRadioGroupProps) {
   return (
     <RadioGroup.Root
-      onValueChange={(value) => updateFieldHandler('type', value)}
+      onValueChange={(value) => updateFieldHandler('tipo', value)}
       className='grid grid-cols-2 gap-4 h-full mt-4'
     >
-      <RadioGroup.Item value='client'>
+      <RadioGroup.Item value='CLIENTE'>
         <div
           className='w-full h-full 
           border rounded-xl shadow-xl flex flex-col'
@@ -30,7 +30,7 @@ export function IdentificationRadioGroup({
         </div>
       </RadioGroup.Item>
 
-      <RadioGroup.Item value='consultant'>
+      <RadioGroup.Item value='CONSULTOR'>
         <div
           className='w-full h-full 
           border rounded-xl shadow-xl flex flex-col'

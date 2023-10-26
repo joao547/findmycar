@@ -37,7 +37,11 @@ export function SignupMultiStep({
           </Step>
         ))}
       </StepsWrapper>
-      <StepBody currentStep={currentStep} handlerChangeStep={setCurrentStep} />
+      <StepBody
+        currentStep={currentStep}
+        handlerChangeStep={setCurrentStep}
+        handlerChangeForm={handleAuthenticateUser}
+      />
     </div>
   );
 }
