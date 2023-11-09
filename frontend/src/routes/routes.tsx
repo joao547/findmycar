@@ -10,5 +10,23 @@ export const router = createBrowserRouter([
   {
     path: '/home',
     element: <Home />,
+    children: [
+      {
+        path: 'dashboard',
+        element: (
+          <h1>
+            Esse texto pertence a tela de <strong>dashboard/home</strong>
+          </h1>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <h1>
+            esse texto pertence a tela de <strong> perfil</strong>
+          </h1>
+        ),
+      },
+    ],
   },
 ]);
