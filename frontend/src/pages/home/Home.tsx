@@ -1,13 +1,15 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
+import { HomeLayout } from './components/HomeLayout/HomeLayout';
+import { Outlet } from 'react-router-dom';
 
 type User = {
   email: string;
   exp: number;
 };
-
-export const Home = () => {
+export function Home() {
   const [userToken, setUserToken] = useState<User>();
+
   useEffect(() => {
     const token = localStorage.getItem('@token');
     if (token) {
@@ -17,9 +19,8 @@ export const Home = () => {
   }, []);
 
   return (
-    <main>
-      <h1>Bem vindo</h1>
-      <p>{userToken?.email}</p>
-    </main>
+    <HomeLayout>
+      <Outlet />
+    </HomeLayout>
   );
-};
+}
