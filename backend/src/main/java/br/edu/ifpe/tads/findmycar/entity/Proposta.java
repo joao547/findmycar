@@ -10,21 +10,31 @@ import java.util.Date;
 @Table(name = "proposta")
 public class Proposta {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.DATE)
     private Date dataDaProposta;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "consultor_id", nullable = false)
-    private Consultor consultor;
+    private String justificativa;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    @JoinColumn(name = "proponente_id", nullable = false)
+    private Usuario proponente;
+
+    @ManyToOne
+    @JoinColumn(name = "destinatario_id", nullable = false)
+    private Usuario destinatario;
+
+    @OneToOne(mappedBy = "propostaAceita")
+    private Servico servico;
+
+    @ManyToOne
+    @JoinColumn(name = "servico_proposta_id")
+    private Interesse servicoProposta;
 
     public void setId(Long id) {
         this.id = id;
@@ -34,19 +44,27 @@ public class Proposta {
         return id;
     }
 
-    public Consultor getConsultor() {
-        return consultor;
+    public String getJustificativa() {
+        return justificativa;
     }
 
-    public void setConsultor(Consultor consultor) {
-        this.consultor = consultor;
+    public void setJustificativa(String justificativa) {
+        this.justificativa = justificativa;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Usuario getProponente() {
+        return proponente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setProponente(Usuario proponente) {
+        this.proponente = proponente;
+    }
+
+    public Usuario getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(Usuario destinatario) {
+        this.destinatario = destinatario;
     }
 }
