@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue("Consultor")
 public class Consultor extends Usuario{
     private double precoDoServico;
     private String areaDeAtuacao;
