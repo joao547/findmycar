@@ -1,7 +1,9 @@
 package br.edu.ifpe.tads.findmycar;
 
-import br.edu.ifpe.tads.findmycar.entity.Usuario;
-import br.edu.ifpe.tads.findmycar.repository.UsuarioRepository;
+import br.edu.ifpe.tads.findmycar.entity.Cliente;
+import br.edu.ifpe.tads.findmycar.entity.Consultor;
+import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
+import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,19 +12,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class TemporaryStartup {
 
     private final PasswordEncoder passwordEncoder;
-    private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
+    private final ConsultorRepository consultorRepository;
 
-    public TemporaryStartup(PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository) {
+    public TemporaryStartup(PasswordEncoder passwordEncoder, ClienteRepository clienteRepository, ConsultorRepository consultorRepository) {
         this.passwordEncoder = passwordEncoder;
-        this.usuarioRepository = usuarioRepository;
+        this.clienteRepository = clienteRepository;
+        this.consultorRepository = consultorRepository;
     }
+
 
     @PostConstruct
     public void criarUsuarioInicial() {
-        Usuario usuario = new Usuario();
-        usuario.setEmail("fulano@email.com");
-        usuario.setSenha(passwordEncoder.encode("lala123"));
+        Cliente cliente = new Cliente();
+        cliente.setEmail("cliente@email.com");
+        cliente.setSenha(passwordEncoder.encode("1"));
+        cliente.setNome("Cliente");
+        clienteRepository.save(cliente);
 
-        usuarioRepository.save(usuario);
+        Consultor consultor = new Consultor();
+        consultor.setEmail("consultor@email.com");
+        consultor.setSenha(passwordEncoder.encode("1"));
+        consultor.setNome("Consultor");
+        consultor.setDisponibilidade("Disponivel");
+        consultor.setAreaDeAtuacao("Recife");
+        consultor.setPrecoDoServico(200.0);
+        consultorRepository.save(consultor);
     }
 }
