@@ -12,4 +12,5 @@ public interface UsuarioService {
     void criarUsuario(UsuarioDto dto) throws BadRequestException;
     Optional<Usuario> findUsuarioByEmail(String email);
     Optional<UsuarioDTOInfo> findUsuarioByJWT(String jwt);
+    void atualizarUsuario(UsuarioDto dto, String tokenJWT);
 }
