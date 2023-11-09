@@ -1,8 +1,10 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDTOInfo;
+import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +42,17 @@ public class UsuarioController {
             .orElseThrow(() -> new UsernameNotFoundException("user not found"));
 
         return ResponseEntity.ok(usuarioDTOInfo);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> atualizarUsuario(
+        @Valid @RequestBody UsuarioDto dto,
+        HttpServletRequest request
+    ) {
+        String tokenJWT = getTokenFromRequest(request);
+
+        usuarioService.atualizarUsuario(dto, tokenJWT);
+
+        return ResponseEntity.noContent().build();
     }
 }

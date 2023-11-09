@@ -14,5 +14,3 @@ spring:
   jwt:
     secret: superHiperMegaTopSecretMessageAquiHereComAindaMaisCaracteresAmigos
     expiration: 600000
-server:
-  port: 8082
