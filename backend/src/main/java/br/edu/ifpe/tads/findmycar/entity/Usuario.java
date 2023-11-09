@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TP_USUARIO", discriminatorType = DiscriminatorType.STRING, length = 20)
 public class Usuario {
 
     @Id
