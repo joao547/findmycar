@@ -16,33 +16,49 @@ export function HomeAside() {
           <li className='flex items-center justify-center'>
             <NavLink
               to='/home/dashboard'
-              className='flex gap-6 items-center text-orange-500 font-semibold h-24'
+              className={({ isActive }) =>
+                isActive
+                  ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
+                  : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
+              }
             >
-              <House className='w-8 h-8 text-orange-500' /> Home
-            </NavLink>
-          </li>
-          <li className='flex items-center justify-center'>
-            <NavLink
-              to=''
-              className='flex gap-6 items-center text-gray-500 font-semibold h-24'
-            >
-              <ChatCircleText className='w-8 h-8 text-gray-500' /> Chat
-            </NavLink>
-          </li>
-          <li className='flex items-center justify-center'>
-            <NavLink
-              to='/home/profile'
-              className='flex gap-6 items-center text-gray-500 font-semibold h-24'
-            >
-              <UserCircleGear className='w-8 h-8 text-gray-500' /> Perfil
+              <House className='w-8 h-8' /> Home
             </NavLink>
           </li>
           <li className='flex items-center justify-center'>
             <NavLink
               to='/'
-              className='flex gap-6 items-center text-gray-500 font-semibold h-24'
+              className={({ isActive }) =>
+                isActive
+                  ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
+                  : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
+              }
             >
-              <SignOut className='w-8 h-8 text-gray-500' /> Sair
+              <ChatCircleText className='w-8 h-8 ' /> Chat
+            </NavLink>
+          </li>
+          <li className='flex items-center justify-center'>
+            <NavLink
+              to='/home/profile'
+              className={({ isActive }) =>
+                isActive
+                  ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
+                  : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
+              }
+            >
+              <UserCircleGear className='w-8 h-8' /> Perfil
+            </NavLink>
+          </li>
+          <li className='flex items-center justify-center'>
+            <NavLink
+              to='/'
+              className={({ isActive }) =>
+                isActive
+                  ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
+                  : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
+              }
+            >
+              <SignOut className='w-8 h-8' /> Sair
             </NavLink>
           </li>
         </ul>
