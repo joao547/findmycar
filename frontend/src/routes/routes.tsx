@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Home } from '../pages/home/Home';
 import LoginPage from '../pages/Login';
+import { Profile } from '../pages/Profile/Profile';
 
 export const router = createBrowserRouter([
   {
@@ -21,11 +22,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: (
-          <h1>
-            esse texto pertence a tela de <strong> perfil</strong>
-          </h1>
-        ),
+        element: <Profile />
       },
     ],
   },
