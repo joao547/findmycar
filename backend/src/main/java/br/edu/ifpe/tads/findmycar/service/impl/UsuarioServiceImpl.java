@@ -134,6 +134,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         cliente.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         return cliente;
-
     }
 }
