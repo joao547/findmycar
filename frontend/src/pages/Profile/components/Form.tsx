@@ -19,7 +19,7 @@ export const Form = ({children, onSubmit, onBlur}: PropsWithChildren<FormProps>)
 		<form 
 			onSubmit={handleSubmit}
 			onBlur={onBlur}
-			className="w-full px-3"
+			className="w-full p-2 m-2 h-full"
 		>
 			{children}
 		</form>

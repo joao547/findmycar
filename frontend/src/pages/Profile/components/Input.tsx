@@ -13,7 +13,7 @@ export const Input = ({name, type, label, value, error = ''}: InputProps) => {
 	return (
 		<div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
 			<label 
-				className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+				className="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
 				htmlFor={name}
 			>{label}</label>
 			
@@ -23,9 +23,9 @@ export const Input = ({name, type, label, value, error = ''}: InputProps) => {
 				aria-label={name}
 				defaultValue={value || ""}
 				className={`
-					appearance-none bg-transparent border-b-2
-					${ hasError ? 'border-red-500' : 'border-amber-500' }
-					w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none
+					w-full appearance-none bg-white border-2 rounded
+					text-gray-500 mr-3 py-4 px-3 leading-tight focus:outline-none 
+					${hasError ? 'border-red-500' : 'border-white' }
 				`}
 			/>
 
