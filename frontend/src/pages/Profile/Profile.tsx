@@ -7,6 +7,8 @@ import { useUpdateUser } from "./data/useUpdateUser";
 import { toast } from 'react-toastify';
 import { useState } from "react";
 
+const MINIMUM_PASS_SIZE = 8;
+
 const initialErrors = {
 	nome: null,
 	senha: null,
@@ -41,12 +43,18 @@ export function Profile () {
 	if (loading) return <h2>Loading</h2>
 	if (!userData) return <h2>Data not found</h2> 
 
-	const handleSubmit = (data: UserEdit) => {
-		const { nome, senha, precoDoServico, areaDeAtuacao, confirmarSenha } = data;
+	const handleSubmit = ({ nome, senha, precoDoServico, areaDeAtuacao, confirmarSenha }: UserEdit) => {
+		
+		if (senha !== "") {
+			if (senha !== confirmarSenha) {
+				setErrorSchema(err => ({...err, senha: 'Senhas não coincidem', confirmarSenha: 'Senhas não coincidem'}))
+				return;
+			}
 
-		if (senha !== confirmarSenha) {
-			setErrorSchema(err => ({...err, senha: 'Senhas não coincidem', confirmarSenha: 'Senhas não coincidem'}))
-			return;
+			if (senha.length < MINIMUM_PASS_SIZE) {
+				setErrorSchema(err => ({...err, senha: `Senha deve ter mais de ${MINIMUM_PASS_SIZE} caracteres`}))
+				return;
+			} 
 		}
 
 		toast.promise(updateUser({ nome, senha, tipo: userData.tipo, precoDoServico, areaDeAtuacao }), {
@@ -60,7 +68,7 @@ export function Profile () {
 
 	return (
 		<>
-			<Form 
+			<Form<UserEdit>
 				onSubmit={handleSubmit}
 				onBlur={resetErrors}
 			>
