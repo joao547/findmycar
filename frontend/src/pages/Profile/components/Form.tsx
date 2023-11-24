@@ -1,18 +1,18 @@
 import { FormEvent, PropsWithChildren } from 'react'
 
-interface FormProps {
-	onSubmit: (obj: object) => void;
+interface FormProps<T> {
+	onSubmit: (obj: T) => void;
 	onBlur: () => void;
 }
 
-export const Form = ({children, onSubmit, onBlur}: PropsWithChildren<FormProps>) => {
+export const Form = <T,>({children, onSubmit, onBlur}: PropsWithChildren<FormProps<T>>) => {
 	const handleSubmit = (ev: FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 
 		const data = new FormData(ev.currentTarget)
 		const values = Object.fromEntries(data.entries());
 
-		onSubmit(values)
+		onSubmit(values as T)
 	}
 
 	return (
