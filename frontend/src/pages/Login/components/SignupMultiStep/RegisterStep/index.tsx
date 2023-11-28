@@ -1,15 +1,29 @@
 import {
-  CurrencyCircleDollar,
   EnvelopeSimple,
   Lock,
   MapPin,
-  Toolbox,
+  SuitcaseSimple,
   User,
+  Wrench,
 } from '@phosphor-icons/react';
 import { TextInput } from '../../../../../components';
 import { MultiStepFields } from '../StepBody';
+import Select from 'react-select';
+import useRegisterStep from '../../../data/useRegisterStep';
+import { useState } from 'react';
 
 export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
+  const [isMecanicalConsultant, setIsMecanicalConsultant] = useState(false);
+
+  const {
+    statesOptions,
+    cityOptions,
+    optionsBuscador,
+    groupedOptions,
+    selectedUf,
+    handlerChangeSelect,
+  } = useRegisterStep();
+
   if (data.tipo === 'CLIENTE') {
     return (
       <>
@@ -93,45 +107,47 @@ export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
         </TextInput.layout>
 
         <TextInput.layout>
-          <TextInput.icon Icon={CurrencyCircleDollar} />
-          <TextInput.inputText
-            type='number'
-            placeholder='Valor do serviço'
-            name='precoDoServico'
-            id='precoDoServico'
-            value={data.precoDoServico}
-            onChange={(e) =>
-              updateFieldHandler('precoDoServico', e.target.value)
-            }
+          <TextInput.icon Icon={Wrench} />
+          <span className='text-gray-500'>
+            Deseja dar consultoria mecanica ?
+          </span>
+          <input
+            type='checkbox'
+            onChange={(e) => setIsMecanicalConsultant(e.target.checked)}
           />
         </TextInput.layout>
 
         <TextInput.layout>
-          <TextInput.icon Icon={Toolbox} />
-          <TextInput.inputText
-            type='text'
-            placeholder='Area de atuação'
-            name='areaDeAtuacao'
-            id='areaDeAtuacao'
-            value={data.areaDeAtuacao}
-            onChange={(e) =>
-              updateFieldHandler('areaDeAtuacao', e.target.value)
-            }
+          <TextInput.icon Icon={SuitcaseSimple} />
+          <Select
+            options={optionsBuscador}
+            placeholder='Area de Atuação'
+            isMulti
           />
+          {isMecanicalConsultant && (
+            <Select
+              options={groupedOptions}
+              placeholder='Opções de Consulta'
+              isMulti
+            />
+          )}
         </TextInput.layout>
 
         <TextInput.layout>
           <TextInput.icon Icon={MapPin} />
-          <TextInput.inputText
-            type='text'
+          <Select
+            options={statesOptions}
             placeholder='Local de atuação'
-            name='disponibilidade'
-            id='disponibilidade'
-            value={data.disponibilidade}
-            onChange={(e) =>
-              updateFieldHandler('disponibilidade', e.target.value)
-            }
+            onChange={handlerChangeSelect}
           />
+          {selectedUf && (
+            <Select
+              options={cityOptions}
+              placeholder='Cidades de atuação'
+              onChange={(newValue) => console.log(newValue)}
+              isMulti
+            />
+          )}
         </TextInput.layout>
 
         <TextInput.layout>
