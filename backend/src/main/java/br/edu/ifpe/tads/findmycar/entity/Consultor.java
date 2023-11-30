@@ -10,10 +10,6 @@ public class Consultor extends Usuario{
     private double precoDoServico;
     private String areaDeAtuacao;
     private String disponibilidade;
-    @OneToMany(mappedBy = "consultor")
-    private Set<Consulta> consultas;
-    @OneToMany(mappedBy = "consultor")
-    private Set<Proposta> propostas;
     @ManyToMany
     @JoinTable(
             name = "consultor_carro",
@@ -51,21 +47,5 @@ public class Consultor extends Usuario{
 
     public void setCarros(Set<Carro> carros) {
         this.carros = carros;
-    }
-
-    public Set<Consulta> getConsultas() {
-        return consultas;
-    }
-
-    public void setConsultas(Set<Consulta> consultas) {
-        this.consultas = consultas;
-    }
-
-    public Set<Proposta> getPropostas() {
-        return propostas;
-    }
-
-    public void setPropostas(Set<Proposta> propostas) {
-        this.propostas = propostas;
     }
 }

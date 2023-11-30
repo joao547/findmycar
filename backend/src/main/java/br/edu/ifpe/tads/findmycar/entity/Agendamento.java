@@ -1,9 +1,13 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
+@Entity
+@Table(name = "agendamento")
 public class Agendamento extends Servico{
     private String local;
 

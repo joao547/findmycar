@@ -14,7 +14,10 @@ public class Proposta {
     private Long id;
 
     @Temporal(TemporalType.DATE)
-    private Date dataDaProposta;
+    private Date dataDaPropostaEnviada;
+
+    @Temporal(TemporalType.DATE)
+    private Date dataDaPropostaAceita;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -30,11 +33,11 @@ public class Proposta {
     private Usuario destinatario;
 
     @OneToOne(mappedBy = "propostaAceita")
-    private Servico servico;
+    private Servico servicoComAceite;
 
     @ManyToOne
-    @JoinColumn(name = "servico_proposta_id")
-    private Interesse servicoProposta;
+    @JoinColumn(name = "servico_proposta_id", referencedColumnName = "id")
+    private Servico servicoProposta;
 
     public void setId(Long id) {
         this.id = id;
@@ -66,5 +69,45 @@ public class Proposta {
 
     public void setDestinatario(Usuario destinatario) {
         this.destinatario = destinatario;
+    }
+
+    public Servico getServicoComAceite() {
+        return servicoComAceite;
+    }
+
+    public void setServicoComAceite(Servico servicoComAceite) {
+        this.servicoComAceite = servicoComAceite;
+    }
+
+    public Servico getServicoProposta() {
+        return servicoProposta;
+    }
+
+    public void setServicoProposta(Servico servicoProposta) {
+        this.servicoProposta = servicoProposta;
+    }
+
+    public Date getDataDaPropostaEnviada() {
+        return dataDaPropostaEnviada;
+    }
+
+    public void setDataDaPropostaEnviada(Date dataDaPropostaEnviada) {
+        this.dataDaPropostaEnviada = dataDaPropostaEnviada;
+    }
+
+    public Date getDataDaPropostaAceita() {
+        return dataDaPropostaAceita;
+    }
+
+    public void setDataDaPropostaAceita(Date dataDaPropostaAceita) {
+        this.dataDaPropostaAceita = dataDaPropostaAceita;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

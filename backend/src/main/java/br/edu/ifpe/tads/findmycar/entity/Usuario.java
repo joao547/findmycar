@@ -22,6 +22,14 @@ public class Usuario {
     private Set<Avaliacao> avaliacoesFeitas;
     @OneToMany(mappedBy = "avaliado")
     private Set<Avaliacao> avaliacoesRecebidas;
+    @OneToMany(mappedBy = "solicitante")
+    private Set<Servico> servicosSolicitados;
+
+    @OneToMany(mappedBy = "proponente")
+    private Set<Proposta> propostasEnviadas;
+
+    @OneToMany(mappedBy = "destinatario")
+    private Set<Proposta> propostasRecebidas;
 
     public void setId(Long id) {
         this.id = id;
@@ -69,5 +77,29 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Set<Servico> getServicosSolicitados() {
+        return servicosSolicitados;
+    }
+
+    public void setServicosSolicitados(Set<Servico> servicosSolicitados) {
+        this.servicosSolicitados = servicosSolicitados;
+    }
+
+    public Set<Proposta> getPropostasEnviadas() {
+        return propostasEnviadas;
+    }
+
+    public void setPropostasEnviadas(Set<Proposta> propostasEnviadas) {
+        this.propostasEnviadas = propostasEnviadas;
+    }
+
+    public Set<Proposta> getPropostasRecebidas() {
+        return propostasRecebidas;
+    }
+
+    public void setPropostasRecebidas(Set<Proposta> propostasRecebidas) {
+        this.propostasRecebidas = propostasRecebidas;
     }
 }
