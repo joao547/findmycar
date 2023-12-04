@@ -8,21 +8,39 @@ import {
 } from '@phosphor-icons/react';
 import { TextInput } from '../../../../../components';
 import { MultiStepFields } from '../StepBody';
-import Select from 'react-select';
-import useRegisterStep from '../../../data/useRegisterStep';
+import Select, { SingleValue } from 'react-select';
+import useRegisterStep, { CityOpt } from '../../../data/useRegisterStep';
 import { useState } from 'react';
 
 export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
-  const [isMecanicalConsultant, setIsMecanicalConsultant] = useState(false);
-
   const {
     statesOptions,
-    cityOptions,
     optionsBuscador,
     groupedOptions,
-    selectedUf,
-    handlerChangeSelect,
+    handlerLoadCitiesOptions,
   } = useRegisterStep();
+
+  const [selectedUf, setSelectedUf] = useState('');
+  const [cityOptions, setCityOptions] = useState<Array<CityOpt>>([]);
+  const [isMecanicalConsultant, setIsMecanicalConsultant] = useState(false);
+
+  async function handlerSelectUf(
+    newValue: SingleValue<{
+      label: string;
+      value: string;
+    }>,
+  ) {
+    if (newValue?.value) {
+      try {
+        const data = await handlerLoadCitiesOptions(newValue?.value as string);
+
+        setCityOptions(data);
+        setSelectedUf(newValue?.value);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 
   if (data.tipo === 'CLIENTE') {
     return (
@@ -123,12 +141,14 @@ export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
             options={optionsBuscador}
             placeholder='Area de Atuação'
             isMulti
+            onChange={(newValue) => console.log(newValue)}
           />
           {isMecanicalConsultant && (
             <Select
               options={groupedOptions}
               placeholder='Opções de Consulta'
               isMulti
+              onChange={(newValue) => console.log(newValue)}
             />
           )}
         </TextInput.layout>
@@ -138,13 +158,16 @@ export function RegisterStep({ data, updateFieldHandler }: MultiStepFields) {
           <Select
             options={statesOptions}
             placeholder='Local de atuação'
-            onChange={handlerChangeSelect}
+            onChange={handlerSelectUf}
           />
           {selectedUf && (
             <Select
               options={cityOptions}
               placeholder='Cidades de atuação'
-              onChange={(newValue) => console.log(newValue)}
+              onChange={(newValue) =>
+                updateFieldHandler('disponibilidade', newValue)
+              }
+              value={data.disponibilidade}
               isMulti
             />
           )}

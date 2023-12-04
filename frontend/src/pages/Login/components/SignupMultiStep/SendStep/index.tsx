@@ -28,12 +28,6 @@ export function SendStep({ data }: MultiStepFields) {
           />
 
           <ReviewField
-            Icon={MapPin}
-            fieldName='Local de Atuação:'
-            fieldValue={data.disponibilidade}
-          />
-
-          <ReviewField
             Icon={CurrencyCircleDollar}
             fieldName='Preço:'
             fieldValue={`$${data.precoDoServico}`}

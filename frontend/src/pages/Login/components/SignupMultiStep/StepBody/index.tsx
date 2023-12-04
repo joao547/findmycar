@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable complexity */
 import { FormEvent, useState } from 'react';
 import { IdentificationStep } from '../IdentificationStep';
@@ -14,11 +15,11 @@ export type MultiStepData = {
   tipo: string;
   precoDoServico: number;
   areaDeAtuacao: string;
-  disponibilidade: string;
+  disponibilidade: Array<{ label: string; value: number; uf: string }>;
 };
 export type MultiStepFields = {
   data: MultiStepData;
-  updateFieldHandler: (key: string, value: string) => void;
+  updateFieldHandler: (key: string, value: any) => void;
 };
 
 type StepBodyProps = {
@@ -36,7 +37,7 @@ const multiStepData = {
   tipo: '',
   precoDoServico: 0,
   areaDeAtuacao: '',
-  disponibilidade: '',
+  disponibilidade: [],
 };
 
 export function StepBody({
@@ -47,7 +48,7 @@ export function StepBody({
   const { handleCreateUser } = useLogin();
   const [data, setData] = useState(multiStepData);
 
-  function updateFieldHandler(key: string, value: string) {
+  function updateFieldHandler(key: string, value: any) {
     setData((prev) => {
       return {
         ...prev,

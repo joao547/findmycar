@@ -7,9 +7,9 @@ export const mapRequestBody = (body: MultiStepData) => {
     email: body.email,
     senha: body.senha,
     tipo: body.tipo,
-    precoDoServico: body.precoDoServico ? body.precoDoServico : undefined,
-    areaDeAtuacao: body.areaDeAtuacao ? body.areaDeAtuacao : undefined,
-    disponibilidade: body.disponibilidade ? body.disponibilidade : undefined,
+    precoDoServico: 69,
+    areaDeAtuacao: 'null',
+    disponibilidade: 'null',
   };
 
   return result;

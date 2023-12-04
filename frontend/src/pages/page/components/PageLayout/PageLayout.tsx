@@ -1,13 +1,13 @@
 import { PropsWithChildren } from 'react';
-import { HomeAside } from '../HomeAside/HomeAside';
-import { HomeHeader } from '../HomeHeader/HomeHeader';
+import { PageAside } from '../PageAside/PageAside';
+import { PageHeader } from '../PageHeader/PageHeader';
 
-export function HomeLayout({ children }: PropsWithChildren) {
+export function PageLayout({ children }: PropsWithChildren) {
   return (
     <div className='w-full h-full flex'>
-      <HomeAside />
+      <PageAside />
       <div className='w-full grid grid-rows-[100px,1fr] bg-slate-100'>
-        <HomeHeader />
+        <PageHeader />
         <main className='p-4'>{children}</main>
       </div>
     </div>

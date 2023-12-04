@@ -1,7 +1,7 @@
 import { Bell, EnvelopeSimple } from '@phosphor-icons/react';
 import { useHome } from '../../data/useHome';
 
-export function HomeHeader() {
+export function PageHeader() {
   const { currentRouteName } = useHome();
   return (
     <header className='h-ful flex items-center p-4 justify-between'>

@@ -7,7 +7,7 @@ import {
 } from '@phosphor-icons/react';
 import { NavLink } from 'react-router-dom';
 
-export function HomeAside() {
+export function PageAside() {
   return (
     <aside className='bg-white w-[18rem] h-screen flex flex-col items-center p-4 shadow-2xl'>
       <img src={logoImg} alt='logo' className='w-28' />
@@ -15,7 +15,7 @@ export function HomeAside() {
         <ul className='w-full'>
           <li className='flex items-center justify-center'>
             <NavLink
-              to='/home/dashboard'
+              to='/user/home'
               className={({ isActive }) =>
                 isActive
                   ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
@@ -39,7 +39,7 @@ export function HomeAside() {
           </li>
           <li className='flex items-center justify-center'>
             <NavLink
-              to='/home/profile'
+              to='/user/profile'
               className={({ isActive }) =>
                 isActive
                   ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'

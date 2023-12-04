@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import { SingleValue } from 'react-select';
-
 type City = {
   id: number;
   nome: string;
@@ -14,6 +11,12 @@ type City = {
       };
     };
   };
+};
+
+export type CityOpt = {
+  label: string;
+  value: number;
+  uf: string;
 };
 
 type MarcaOption = {
@@ -102,40 +105,29 @@ const optionsBuscador = [
 ];
 
 function useRegisterStep() {
-  const [cities, setCities] = useState<Array<City>>([]);
-  const [selectedUf, setSelectedUf] = useState('');
-
-  const cityOptions = cities.map((c) => {
-    return {
-      label: c.nome,
-      value: c.id,
-      uf: c.municipio.microrregiao.mesorregiao.UF.sigla,
-    };
-  });
-
-  const handlerChangeSelect = async (
-    newValue: SingleValue<{
-      label: string;
-      value: string;
-    }>,
-  ) => {
+  const handlerLoadCitiesOptions = async (uf: string) => {
     try {
-      setSelectedUf(newValue?.value as string);
       const response = await fetch(
-        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${newValue?.value}/distritos`,
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/distritos`,
       );
       const data = await response.json();
 
-      setCities(data);
+      const options = data.map((c: City) => {
+        return {
+          label: c.nome,
+          value: c.id,
+          uf: c.municipio.microrregiao.mesorregiao.UF.sigla,
+        };
+      });
+
+      return options;
     } catch (error) {
       console.error('Erro ao buscar dados da API:', error);
     }
   };
 
   return {
-    cityOptions,
-    selectedUf,
-    handlerChangeSelect,
+    handlerLoadCitiesOptions,
     statesOptions,
     optionsBuscador,
     groupedOptions,
