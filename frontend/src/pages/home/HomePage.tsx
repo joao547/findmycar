@@ -1,10 +1,14 @@
-import { MagnifyingGlass } from '@phosphor-icons/react';
+/* eslint-disable max-len */
+import { MagnifyingGlass, MapPin } from '@phosphor-icons/react';
+import Select, { SingleValue } from 'react-select';
+import { optionsBuscador, ufOptions } from '../../helpers/selectOptions';
+import ToggleSwitch from './components/ToggleSwitch';
 
 export function HomePage() {
   return (
     <div>
       <section className='flex items-center justify-center'>
-        <div className='bg-white h-20 w-full rounded-md flex items-center justify-between p-4'>
+        <div className='bg-white h-20 w-full rounded-md flex items-center p-4 gap-4'>
           <div className='flex gap-4 w-full'>
             <MagnifyingGlass size={32} />
             <input
@@ -13,55 +17,30 @@ export function HomePage() {
               className='w-full outline-none'
             />
           </div>
+          <div className='w-1 h-full bg-gray-500' />
+          <div className='flex gap-4 w-full'>
+            <MapPin size={32} />
+            <div className='w-full'>
+              <Select options={ufOptions} placeholder='Local de atuação' />
+            </div>
+          </div>
+
           <button className='bg-orange-500 h-full w-40 rounded-md'>
             Buscar
           </button>
         </div>
       </section>
-      <section className='mt-4 flex gap-10'>
-        <div>
-          <p>Sort By:</p>
-          <input type='text' />
+      <section className='mt-4 flex items-center gap-6'>
+        <ToggleSwitch />
+        <div className=''>
+          <Select
+            options={optionsBuscador}
+            placeholder='Tipo de consultoria'
+            isMulti
+          />
         </div>
-
-        <div>
-          <p>Type:</p>
-          <input type='text' />
-        </div>
-
-        <div>
-          <p>Sort By:</p>
-          <input type='text' />
-        </div>
-
-        <div>
-          <p>Tipo de Serviço:</p>
-          <select name='' id=''>
-            <option value='1'>consultoria mecanica</option>
-            <option value=''>consultoria veiculo</option>
-          </select>
-        </div>
+        <button className='text-sm text-gray-500'>Limpar Filtros</button>
       </section>
-      <hr className='mt-4' />
-      <main className='mt-4 flex justify-between flex-wrap'>
-        <ul className='flex w-full justify-between'>
-          <li>
-            <div className='w-60 h-60 bg-gray-500 rounded-md'></div>
-          </li>
-          <li>
-            <div className='w-60 h-60 bg-gray-500 rounded-md'></div>
-          </li>
-          <li>
-            <div className='w-60 h-60 bg-gray-500 rounded-md'></div>
-          </li>
-          <li>
-            <div className='w-60 h-60 bg-gray-500 rounded-md'></div>
-          </li>
-          <li>
-            <div className='w-60 h-60 bg-gray-500 rounded-md'></div>
-          </li>
-        </ul>
-      </main>
     </div>
   );
 }
