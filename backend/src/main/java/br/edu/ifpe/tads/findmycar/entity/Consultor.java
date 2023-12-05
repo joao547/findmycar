@@ -2,6 +2,8 @@ package br.edu.ifpe.tads.findmycar.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,6 +12,18 @@ public class Consultor extends Usuario{
     private double precoDoServico;
     private String areaDeAtuacao;
     private String disponibilidade;
+
+    @ElementCollection
+    @CollectionTable(name="user_listConsultant")
+    private Set<String> listaConsultor = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name="user_listSeeker")
+    private Set<String> areaBuscador = new HashSet<>();
+
+    @ManyToMany(mappedBy = "local")
+    private Set<Local> areaAtuacao;
+
     @OneToMany(mappedBy = "consultor")
     private Set<Consulta> consultas;
     @OneToMany(mappedBy = "consultor")
@@ -68,4 +82,16 @@ public class Consultor extends Usuario{
     public void setPropostas(Set<Proposta> propostas) {
         this.propostas = propostas;
     }
+
+    public Set<String> getListaConsultor() { return listaConsultor; }
+
+    public void setListaConsultor(Set<String> listaConsultor) { this.listaConsultor = listaConsultor; }
+
+    public Set<String> getListaBuscador() { return areaBuscador; }
+
+    public void setListaBuscador(Set<String> listaBuscador) { this.areaBuscador = listaBuscador; }
+
+    public Set<Local> getLocalAtuacao() { return areaAtuacao; }
+
+    public void setLocalAtuacao(Set<Local> localAtuacao) { this.areaAtuacao = localAtuacao; }
 }
