@@ -23,8 +23,13 @@ public class Consultor extends Usuario{
     @CollectionTable(name="user_listSeeker")
     private Set<String> areasBuscador = new HashSet<>();
 
-    @ManyToMany(mappedBy = "consultor")
-    @Cascade(CascadeType.PERSIST)
+    @ManyToMany
+    @Cascade(CascadeType.ALL)
+    @JoinTable(
+        name = "consultor_locais",
+        joinColumns = @JoinColumn(name = "consultor_id"),
+        inverseJoinColumns = @JoinColumn(name = "local_id")
+    )
     private Set<Local> locais;
 
     @OneToMany(mappedBy = "consultor")
