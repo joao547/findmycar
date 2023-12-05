@@ -15,14 +15,14 @@ public class Consultor extends Usuario{
 
     @ElementCollection
     @CollectionTable(name="user_listConsultant")
-    private Set<String> listaConsultor = new HashSet<>();
+    private Set<String> areasConsultor = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name="user_listSeeker")
-    private Set<String> areaBuscador = new HashSet<>();
+    private Set<String> areasBuscador = new HashSet<>();
 
     @ManyToMany(mappedBy = "local")
-    private Set<Local> areaAtuacao;
+    private Set<Local> locais;
 
     @OneToMany(mappedBy = "consultor")
     private Set<Consulta> consultas;
@@ -83,15 +83,15 @@ public class Consultor extends Usuario{
         this.propostas = propostas;
     }
 
-    public Set<String> getListaConsultor() { return listaConsultor; }
+    public Set<String> getAreasConsultor() { return areasConsultor; }
 
-    public void setListaConsultor(Set<String> listaConsultor) { this.listaConsultor = listaConsultor; }
+    public void setAreasConsultor(Set<String> areasConsultor) { this.areasConsultor = areasConsultor; }
 
-    public Set<String> getListaBuscador() { return areaBuscador; }
+    public Set<String> getAreasBuscador() { return areasBuscador; }
 
-    public void setListaBuscador(Set<String> listaBuscador) { this.areaBuscador = listaBuscador; }
+    public void setAreasBuscador(Set<String> areaBuscador) { this.areasBuscador = areaBuscador; }
 
-    public Set<Local> getLocalAtuacao() { return areaAtuacao; }
+    public Set<Local> getLocais() { return locais; }
 
-    public void setLocalAtuacao(Set<Local> localAtuacao) { this.areaAtuacao = localAtuacao; }
+    public void setLocais(Set<Local> locais) { this.locais = locais; }
 }
