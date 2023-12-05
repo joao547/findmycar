@@ -1,6 +1,8 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +23,8 @@ public class Consultor extends Usuario{
     @CollectionTable(name="user_listSeeker")
     private Set<String> areasBuscador = new HashSet<>();
 
-    @ManyToMany(mappedBy = "local")
+    @ManyToMany(mappedBy = "consultor")
+    @Cascade(CascadeType.PERSIST)
     private Set<Local> locais;
 
     @OneToMany(mappedBy = "consultor")

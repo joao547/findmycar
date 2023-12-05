@@ -8,8 +8,10 @@ import java.util.Set;
 @Table(name = "local")
 public class Local {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    @Id
+    @Column(unique = true)
     private Long ibgeCode;
     private String uf;
     private String name;
