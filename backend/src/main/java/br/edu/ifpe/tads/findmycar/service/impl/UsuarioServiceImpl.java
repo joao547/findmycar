@@ -123,9 +123,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         //consultor.setDisponibilidade(dto.getDisponibilidade());
         //consultor.setAreaDeAtuacao(dto.getAreaDeAtuacao());
         //consultor.setPrecoDoServico(dto.getPrecoDoServico());
-        consultor.setListaConsultor(dto.getAreasConsultor());
-        consultor.setListaBuscador(dto.getAreasBuscador());
-        consultor.setLocalAtuacao(dto.getLocais());
+        consultor.setAreasConsultor(dto.getAreasConsultor());
+        consultor.setAreasBuscador(dto.getAreasBuscador());
+        consultor.setLocais(dto.getLocais());
         return consultor;
     }
 
