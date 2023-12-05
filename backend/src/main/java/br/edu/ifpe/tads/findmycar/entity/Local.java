@@ -1,6 +1,9 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.util.Set;
 
@@ -16,9 +19,10 @@ public class Local {
     private String uf;
     private String name;
 
-    @ManyToMany
-    @JoinColumn(name = "consultor_id", nullable = false)
-    private Set<Usuario> consultor;
+    @ManyToMany(mappedBy = "locais")
+    @Cascade(CascadeType.REFRESH)
+    @JsonIgnore
+    private Set<Consultor> consultor;
 
 
     public void setId(Long id) {
@@ -41,7 +45,7 @@ public class Local {
 
     public void setName(String name) { this.name = name; }
 
-    public Set<Usuario> getConsultor() {return consultor; }
+    public Set<Consultor> getConsultor() {return consultor; }
 
-    public void setConsultor(Set<Usuario> consultor) { this.consultor = consultor; }
+    public void setConsultor(Set<Consultor> consultor) { this.consultor = consultor; }
 }

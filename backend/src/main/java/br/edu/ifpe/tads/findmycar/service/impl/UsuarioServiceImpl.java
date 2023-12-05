@@ -126,6 +126,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         consultor.setAreasConsultor(dto.getAreasConsultor());
         consultor.setAreasBuscador(dto.getAreasBuscador());
         consultor.setLocais(dto.getLocais());
+
         return consultor;
     }
 
