@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
-@Conditional(selected = "tipo", values = {"consultor"}, required = {"precoDoServico", "areaDeAtuacao", "disponibilidade"})
+//@Conditional(selected = "tipo", values = {"consultor"}, required = {"precoDoServico", "areaDeAtuacao", "disponibilidade"})
 public class UsuarioDto {
     private long id;
 
