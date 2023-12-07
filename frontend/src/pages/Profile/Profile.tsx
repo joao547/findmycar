@@ -6,6 +6,7 @@ import { Button } from "./components/Button";
 import { useUpdateUser } from "./data/useUpdateUser";
 import { toast } from 'react-toastify';
 import { useState } from "react";
+import InputImage from "../../components/InputImage";
 
 const MINIMUM_PASS_SIZE = 8;
 
@@ -116,6 +117,7 @@ export function Profile () {
 				</FormGroup>
 
 				<FormGroup>
+					<InputImage/>
 					<Button>
 						Atualizar
 					</Button>

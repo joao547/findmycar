@@ -19,6 +19,7 @@ export function HomeHeader() {
             src='https://github.com/IgorRS-2302.png'
             alt=''
             className='w-full h-full object-cover rounded-full'
+            style={{ cursor: 'pointer'}}
           />
         </div>
       </div>
