@@ -1,24 +1,20 @@
-/* eslint-disable complexity */
 import { FormEvent, useState } from 'react';
 import { IdentificationStep } from '../IdentificationStep';
 import { RegisterStep } from '../RegisterStep';
 import { SendStep } from '../SendStep';
 import { StepActions } from '../StepActions';
 import { toast } from 'react-toastify';
-import useLogin from '../../../data/useLogin';
+import useLogin, { MultiStepDataInput } from '../../../data/useLogin';
 
-export type MultiStepData = {
+export type ConsultantLocation = {
+  ibgeCode: number;
   name: string;
-  email: string;
-  senha: string;
-  tipo: string;
-  precoDoServico: number;
-  areaDeAtuacao: string;
-  disponibilidade: string;
+  uf: string;
 };
+
 export type MultiStepFields = {
-  data: MultiStepData;
-  updateFieldHandler: (key: string, value: string) => void;
+  data: MultiStepDataInput;
+  updateFieldHandler: (key: string, value: string | number | object) => void;
 };
 
 type StepBodyProps = {
@@ -30,13 +26,13 @@ type StepBodyProps = {
 const stepsBody = [IdentificationStep, RegisterStep, SendStep];
 
 const multiStepData = {
-  name: '',
+  nome: '',
   email: '',
   senha: '',
   tipo: '',
-  precoDoServico: 0,
-  areaDeAtuacao: '',
-  disponibilidade: '',
+  locais: [],
+  areasBuscador: [],
+  areasConsultor: [],
 };
 
 export function StepBody({
@@ -47,7 +43,7 @@ export function StepBody({
   const { handleCreateUser } = useLogin();
   const [data, setData] = useState(multiStepData);
 
-  function updateFieldHandler(key: string, value: string) {
+  function updateFieldHandler(key: string, value: string | number | object) {
     setData((prev) => {
       return {
         ...prev,

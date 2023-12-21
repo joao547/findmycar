@@ -34,7 +34,7 @@ export function Authentication({ handleCreateAccount }: AuthenticationProps) {
     if (token) {
       localStorage.setItem('@token', token);
 
-      navigate('/home');
+      navigate('/user/home');
     }
   }
   return (

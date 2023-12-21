@@ -1,13 +1,16 @@
 package br.edu.ifpe.tads.findmycar.dto;
 
 import br.edu.ifpe.tads.findmycar.annotations.Conditional;
+import br.edu.ifpe.tads.findmycar.entity.Local;
 import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Conditional(selected = "tipo", values = {"consultor"}, required = {"precoDoServico", "areaDeAtuacao", "disponibilidade"})
+import java.util.Set;
+
+//@Conditional(selected = "tipo", values = {"consultor"}, required = {"precoDoServico", "areaDeAtuacao", "disponibilidade"})
 public class UsuarioDto {
     private long id;
 
@@ -25,16 +28,24 @@ public class UsuarioDto {
     @NotNull
     private TipoUsuario tipo;
 
-    private Double precoDoServico;
+   // private Double precoDoServico;
 
-    private String areaDeAtuacao;
+    //private String areaDeAtuacao;
 
-    private String disponibilidade;
+    //private String disponibilidade;
+
+
+    private Set<Local> locais;
+
+    private Set<String> areasBuscador;
+
+    private Set<String> areasConsultor;
+
 
     public UsuarioDto() {
     }
 
-    public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
+   /* public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -43,8 +54,17 @@ public class UsuarioDto {
         this.precoDoServico = precoDoServico;
         this.areaDeAtuacao = areaDeAtuacao;
         this.disponibilidade = disponibilidade;
-    }
-
+    }*/
+   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<String> areasBuscador, Set<String> areasConsultor) {
+       this.id = id;
+       this.nome = nome;
+       this.email = email;
+       this.senha = senha;
+       this.tipo = tipo;
+       this.locais = locais;
+       this.areasBuscador = areasBuscador;
+       this.areasConsultor = areasConsultor;
+   }
     public long getId() {
         return id;
     }
@@ -77,7 +97,7 @@ public class UsuarioDto {
         this.senha = senha;
     }
 
-    public Double getPrecoDoServico() {
+    /*public Double getPrecoDoServico() {
         return precoDoServico;
     }
 
@@ -99,7 +119,19 @@ public class UsuarioDto {
 
     public void setDisponibilidade(String disponibilidade) {
         this.disponibilidade = disponibilidade;
-    }
+    }*/
+
+    public Set<Local> getLocais() { return locais; }
+
+    public void setLocais(Set<Local> locais) { this.locais = locais; }
+
+    public Set<String> getAreasBuscador() { return areasBuscador; }
+
+    public void setAreasBuscador(Set<String> areasBuscador) { this.areasBuscador = areasBuscador; }
+
+    public Set<String> getAreasConsultor() { return areasConsultor; }
+
+    public void setAreasConsultor(Set<String> areasConsultor) { this.areasConsultor = areasConsultor; }
 
     public TipoUsuario getTipo() {
         return tipo;

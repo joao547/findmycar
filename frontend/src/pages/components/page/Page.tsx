@@ -1,13 +1,13 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { HomeLayout } from './components/HomeLayout/HomeLayout';
+import { PageLayout } from './components/PageLayout/PageLayout';
 import { Outlet } from 'react-router-dom';
 
 type User = {
   email: string;
   exp: number;
 };
-export function Home() {
+export function Page() {
   const [userToken, setUserToken] = useState<User>();
 
   useEffect(() => {
@@ -19,8 +19,8 @@ export function Home() {
   }, []);
 
   return (
-    <HomeLayout>
+    <PageLayout>
       <Outlet />
-    </HomeLayout>
+    </PageLayout>
   );
 }

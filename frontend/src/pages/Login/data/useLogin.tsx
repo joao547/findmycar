@@ -1,17 +1,36 @@
 import { api } from '../../../service/api';
-import { MultiStepData } from '../components/SignupMultiStep/StepBody';
+import { CityOpt, GeneralOption } from './signupMultiStepSelectOptions';
 
-export const mapRequestBody = (body: MultiStepData) => {
+export type MultiStepDataInput = {
+  nome: string;
+  email: string;
+  senha: string;
+  tipo: string;
+  locais: Array<CityOpt>;
+  areasBuscador: Array<GeneralOption>;
+  areasConsultor: Array<GeneralOption>;
+};
+
+export const mapRequestBody = (body: MultiStepDataInput) => {
   const result = {
-    nome: body.name,
+    nome: body.nome,
     email: body.email,
     senha: body.senha,
     tipo: body.tipo,
-    precoDoServico: body.precoDoServico ? body.precoDoServico : undefined,
-    areaDeAtuacao: body.areaDeAtuacao ? body.areaDeAtuacao : undefined,
-    disponibilidade: body.disponibilidade ? body.disponibilidade : undefined,
+    locais: body.locais.map((location) => {
+      return {
+        ibgeCode: location.value,
+        name: location.label,
+        uf: location.uf,
+      };
+    }),
+    areasBuscador: body.areasBuscador.map((areaBuscador) => areaBuscador.value),
+    areasConsultor: body.areasConsultor.map(
+      (areaConsultor) => areaConsultor.value,
+    ),
   };
 
+  console.log(result);
   return result;
 };
 
@@ -29,7 +48,7 @@ function useLogin() {
     }
   };
 
-  const handleCreateUser = async (user: MultiStepData) => {
+  const handleCreateUser = async (user: MultiStepDataInput) => {
     try {
       const body = mapRequestBody(user);
       const { data } = await api.post('/api/auth/criar', body);

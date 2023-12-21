@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '../pages/home/Home';
+import { Page } from '../pages/components/page/Page';
+import { HomePage } from '../pages/home/HomePage';
 import LoginPage from '../pages/Login';
 import { Profile } from '../pages/Profile/Profile';
 
@@ -9,20 +10,16 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: '/home',
-    element: <Home />,
+    path: '/user',
+    element: <Page />,
     children: [
       {
-        path: 'dashboard',
-        element: (
-          <h1>
-            Esse texto pertence a tela de <strong>dashboard/home</strong>
-          </h1>
-        ),
+        path: '/user/home',
+        element: <HomePage />,
       },
       {
-        path: 'profile',
-        element: <Profile />
+        path: '/user/profile',
+        element: <Profile />,
       },
     ],
   },
