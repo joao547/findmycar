@@ -3,6 +3,7 @@ import { MagnifyingGlass, MapPin } from '@phosphor-icons/react';
 import Select from 'react-select';
 import { optionsBuscador, ufOptions } from '../../helpers/selectOptions';
 import ToggleSwitch from './components/ToggleSwitch';
+import ConsultantProfile from './components/ConsultantProfile';
 import { useRef, useState } from 'react';
 
 interface Option {
@@ -11,6 +12,14 @@ interface Option {
 }
 
 export function HomePage() {
+  const [consultants, setConsultants] = useState<
+    Array<{
+      consultantName: string;
+      consultantCities: string;
+      consultantArea: string;
+    }>
+  >([]);
+
   const [isChecked, setIsChecked] = useState(false);
   const ufSelectRef = useRef<any>(null);
   const typeSelect = useRef<any>(null);
@@ -29,6 +38,8 @@ export function HomePage() {
     if (typeSelect.current) {
       typeSelect.current.clearValue();
     }
+
+    setConsultants([]);
   }
 
   function handlerSearch() {
@@ -43,6 +54,35 @@ export function HomePage() {
     console.log({
       query: { isChecked, state: searchStates, type: consultantType },
     });
+
+    const data = [
+      {
+        consultantName: 'lucas',
+        consultantCities: 'Recife, Pernambuco',
+        consultantArea:
+          'carros antigos, carros comuns, carros economicos, carros raros',
+      },
+      {
+        consultantName: 'Luiz Marcel',
+        consultantCities: 'Recife, Pernambuco',
+        consultantArea:
+          'carros antigos, carros comuns, carros economicos, carros raros',
+      },
+      {
+        consultantName: 'Renan Pryston',
+        consultantCities: 'Recife, Pernambuco',
+        consultantArea:
+          'carros antigos, carros comuns, carros economicos, carros raros',
+      },
+      {
+        consultantName: 'Joao Vitor',
+        consultantCities: 'Recife, Pernambuco',
+        consultantArea:
+          'carros antigos, carros comuns, carros economicos, carros raros',
+      },
+    ];
+
+    setConsultants(data);
   }
   return (
     <div>
@@ -94,6 +134,24 @@ export function HomePage() {
           Limpar Filtros
         </button>
       </section>
+
+      <div className='mt-8'>
+        <span className='font-medium'>
+          {consultants.length > 0 ? consultants.length : 'Nenhum'} consultor
+          disponíveis
+        </span>
+        <ul className='grid grid-cols-4 gap-y-4 '>
+          {consultants.length > 0 &&
+            consultants.map((consultant) => (
+              <ConsultantProfile
+                key={consultant.consultantName}
+                consultantName={consultant.consultantName}
+                consultantArea={consultant.consultantArea}
+                consultantCities={consultant.consultantCities}
+              />
+            ))}
+        </ul>
+      </div>
     </div>
   );
 }
