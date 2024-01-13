@@ -126,7 +126,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         consultor.setAreasConsultor(dto.getAreasConsultor());
         consultor.setAreasBuscador(dto.getAreasBuscador());
         consultor.setLocais(dto.getLocais());
-
+        consultor.setFotoPerfil(dto.getFotoPerfil());
         return consultor;
     }
 
@@ -135,6 +135,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         cliente.setEmail(dto.getEmail());
         cliente.setNome(dto.getNome());
         cliente.setSenha(passwordEncoder.encode(dto.getSenha()));
+        cliente.setFotoPerfil(dto.getFotoPerfil());
 
         return cliente;
     }

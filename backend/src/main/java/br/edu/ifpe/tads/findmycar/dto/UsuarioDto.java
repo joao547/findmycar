@@ -41,6 +41,7 @@ public class UsuarioDto {
 
     private Set<String> areasConsultor;
 
+    private byte[] fotoPerfil;
 
     public UsuarioDto() {
     }
@@ -55,7 +56,7 @@ public class UsuarioDto {
         this.areaDeAtuacao = areaDeAtuacao;
         this.disponibilidade = disponibilidade;
     }*/
-   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<String> areasBuscador, Set<String> areasConsultor) {
+   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<String> areasBuscador, Set<String> areasConsultor, byte[] fotoPerfil) {
        this.id = id;
        this.nome = nome;
        this.email = email;
@@ -64,6 +65,7 @@ public class UsuarioDto {
        this.locais = locais;
        this.areasBuscador = areasBuscador;
        this.areasConsultor = areasConsultor;
+       this.fotoPerfil = fotoPerfil;
    }
     public long getId() {
         return id;
@@ -140,4 +142,8 @@ public class UsuarioDto {
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
     }
+
+    public byte[] getFotoPerfil() {return fotoPerfil;}
+
+    public void setFotoPerfil(byte[] fotoPerfil) {this.fotoPerfil = fotoPerfil;}
 }

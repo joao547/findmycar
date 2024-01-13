@@ -18,6 +18,9 @@ public class Usuario {
     private String email;
     private String senha;
 
+    @Lob
+    private byte[] fotoPerfil;
+
     @OneToMany(mappedBy = "avaliador")
     private Set<Avaliacao> avaliacoesFeitas;
     @OneToMany(mappedBy = "avaliado")
@@ -70,4 +73,9 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+
+    public byte[] getFotoPerfil() {return fotoPerfil;}
+
+    public void setFotoPerfil(byte[] fotoPerfil) {this.fotoPerfil = fotoPerfil;}
 }
