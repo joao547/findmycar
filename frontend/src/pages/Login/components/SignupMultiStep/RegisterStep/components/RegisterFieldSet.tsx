@@ -54,7 +54,7 @@ export function RegisterFieldSet({
   if (registerType === 'CLIENTE') {
     return (
       <fieldset className='flex flex-col gap-4 mt-0'>
-        <AvatarInput />
+        <AvatarInput handleUploadUserAvatar={updateFieldHandler} />
         <TextInput.layout>
           <TextInput.icon Icon={User} />
           <TextInput.inputText
@@ -62,7 +62,7 @@ export function RegisterFieldSet({
             placeholder='Seu nome'
             name='name'
             id='name'
-            onChange={(e) => updateFieldHandler('name', e.target.value)}
+            onChange={(e) => updateFieldHandler('nome', e.target.value)}
           />
         </TextInput.layout>
 
@@ -95,6 +95,7 @@ export function RegisterFieldSet({
 
   return (
     <fieldset className='flex flex-col gap-4 mt-0'>
+      <AvatarInput handleUploadUserAvatar={updateFieldHandler} />
       <TextInput.layout>
         <TextInput.icon Icon={User} />
         <TextInput.inputText

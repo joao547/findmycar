@@ -2,6 +2,7 @@ import { api } from '../../../service/api';
 import { CityOpt, GeneralOption } from './signupMultiStepSelectOptions';
 
 export type MultiStepDataInput = {
+  avatar: File;
   nome: string;
   email: string;
   senha: string;
@@ -13,6 +14,7 @@ export type MultiStepDataInput = {
 
 export const mapRequestBody = (body: MultiStepDataInput) => {
   const result = {
+    avatar: body.avatar,
     nome: body.nome,
     email: body.email,
     senha: body.senha,

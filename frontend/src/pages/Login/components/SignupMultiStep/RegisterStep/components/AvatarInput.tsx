@@ -2,8 +2,15 @@ import { ChangeEvent, useState } from 'react';
 import { TextInput } from '../../../../../../components';
 import avatarSrc from '../../../../../../assets/avatarImage.png';
 
+type AvatarInputProps = {
+  handleUploadUserAvatar: (
+    key: string,
+    value: string | number | object,
+  ) => void;
+};
+
 /* eslint-disable max-len */
-export function AvatarInput() {
+export function AvatarInput({ handleUploadUserAvatar }: AvatarInputProps) {
   const [avatarImg, setAvatarImg] = useState<string>(avatarSrc);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
@@ -12,6 +19,7 @@ export function AvatarInput() {
     if (file) {
       const url = URL.createObjectURL(file);
       setAvatarImg(url);
+      handleUploadUserAvatar('avatar', file);
     }
   }
   return (
