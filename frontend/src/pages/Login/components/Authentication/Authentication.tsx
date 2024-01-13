@@ -38,7 +38,7 @@ export function Authentication({ handleCreateAccount }: AuthenticationProps) {
     }
   }
   return (
-    <div className='p-4 mt-24'>
+    <div className='p-4 h-full'>
       <Logo />
       <form className='flex flex-col gap-8 mt-8' onSubmit={onLoginAction}>
         <TextInput.layout>
