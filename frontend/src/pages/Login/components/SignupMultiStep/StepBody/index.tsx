@@ -30,6 +30,7 @@ const multiStepData = {
   email: '',
   senha: '',
   tipo: '',
+  avatar: {} as File,
   locais: [],
   areasBuscador: [],
   areasConsultor: [],
@@ -70,7 +71,11 @@ export function StepBody({
   const CurrentStepBody = stepsBody[currentStep];
 
   return (
-    <form className='flex flex-col h-2/3 gap-4' onSubmit={handleSubmit}>
+    <form
+      className='flex flex-col h-2/3 gap-4'
+      onSubmit={handleSubmit}
+      encType='multipart/form-data'
+    >
       <span className='block text-sm text-gray-400 mt-8'>
         passo {currentStep + 1}/3
       </span>
