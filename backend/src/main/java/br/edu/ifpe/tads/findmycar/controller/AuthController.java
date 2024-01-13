@@ -7,6 +7,9 @@ import br.edu.ifpe.tads.findmycar.infra.security.AuthenticationSucessfull;
 import br.edu.ifpe.tads.findmycar.infra.security.CredencialsDTO;
 import br.edu.ifpe.tads.findmycar.infra.security.JWTUtil;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("http://127.0.0.1:5173")
 @RestController
@@ -47,12 +51,25 @@ public class AuthController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity registrarUsuario(@Valid @RequestBody UsuarioDto dto){
+    public ResponseEntity registrarUsuario(@Valid @RequestParam("pessoaJson") String pessoaJson , @RequestParam("file") MultipartFile file){
+        ObjectMapper mapper = new ObjectMapper();
+        UsuarioDto pessoa = null;
+
         try {
-            this.usuarioService.criarUsuario(dto);
+            pessoa = mapper.readValue(pessoaJson, UsuarioDto.class);
+            this.usuarioService.criarUsuario(pessoa, file);
         } catch (BadRequestException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (JsonMappingException e) {
+            throw new RuntimeException("Não foi possível ler o json");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Não foi possível ler o json");
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+
+
+
+
 }

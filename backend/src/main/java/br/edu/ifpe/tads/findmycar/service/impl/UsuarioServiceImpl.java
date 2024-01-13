@@ -15,7 +15,10 @@ import br.edu.ifpe.tads.findmycar.service.UsuarioService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -82,12 +85,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void criarUsuario(UsuarioDto dto) throws BadRequestException {
+    public void criarUsuario(UsuarioDto dto, MultipartFile file) throws BadRequestException {
         if (TipoUsuario.CONSULTOR.equals(dto.getTipo())){
-            this.consultorRepository.save(criarConsultor(dto));
+            this.consultorRepository.save(criarConsultor(dto, file));
         }
         else if(TipoUsuario.CLIENTE.equals(dto.getTipo())){
-            this.clienteRepository.save(criarCliente(dto));
+            this.clienteRepository.save(criarCliente(dto, file));
         }
         else {
             throw new BadRequestException("Tipo de usuário não pode ser aceito");
@@ -103,19 +106,19 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new UsernameNotFoundException("User not found");
 
         if (dto.getTipo().getName().equalsIgnoreCase("CONSULTOR")) {
-            Consultor consultor = criarConsultor(dto);
+            Consultor consultor = criarConsultor(dto, null);
             consultor.setId(usuario.get().getId());
             this.consultorRepository.save(consultor);
         }
 
         if (dto.getTipo().getName().equalsIgnoreCase("CLIENTE")) {
-            Cliente cliente = criarCliente(dto);
+            Cliente cliente = criarCliente(dto, null);
             cliente.setId(usuario.get().getId());
             this.clienteRepository.save(cliente);
         }
     }
 
-    private Consultor criarConsultor(UsuarioDto dto){
+    private Consultor criarConsultor(UsuarioDto dto, MultipartFile file){
         Consultor consultor = new Consultor();
         consultor.setEmail(dto.getEmail());
         consultor.setNome(dto.getNome());
@@ -126,17 +129,46 @@ public class UsuarioServiceImpl implements UsuarioService {
         consultor.setAreasConsultor(dto.getAreasConsultor());
         consultor.setAreasBuscador(dto.getAreasBuscador());
         consultor.setLocais(dto.getLocais());
-        consultor.setFotoPerfil(dto.getFotoPerfil());
+        try {
+            if(!file.isEmpty()){
+            consultor.setFotoPerfil(file.getBytes());}
+        } catch (IOException e) {
+            throw new RuntimeException("erro ao salvar a foto: " + e);
+        }
         return consultor;
     }
 
-    private Cliente criarCliente(UsuarioDto dto){
+    private Cliente criarCliente(UsuarioDto dto, MultipartFile file){
         Cliente cliente = new Cliente();
         cliente.setEmail(dto.getEmail());
         cliente.setNome(dto.getNome());
         cliente.setSenha(passwordEncoder.encode(dto.getSenha()));
-        cliente.setFotoPerfil(dto.getFotoPerfil());
+        try {
+            if(!file.isEmpty()){
+            cliente.setFotoPerfil(file.getBytes());}
+        } catch (IOException e) {
+            throw new RuntimeException("erro ao salvar a foto: " + e);
+        }
 
         return cliente;
     }
+    public void uploadFotoPerfil(Long consultorId, MultipartFile file) {
+        Consultor consultor = consultorRepository.findById(consultorId)
+                .orElseThrow(() -> new RuntimeException ("não foi possível encontrar o Consultor"));
+
+        try {
+            consultor.setFotoPerfil(file.getBytes());
+            consultorRepository.save(consultor);
+        } catch (IOException e) {
+            throw new RuntimeException("erro ao salvar a foto: " + e);
+        }
+    }
+
+    public byte[] downloadFotoPerfil(Long consultorId) {
+        Consultor consultor = consultorRepository.findById(consultorId)
+                .orElseThrow(() -> new RuntimeException("não foi possível buscar a foto"));
+
+        return consultor.getFotoPerfil();
+    }
+
 }
