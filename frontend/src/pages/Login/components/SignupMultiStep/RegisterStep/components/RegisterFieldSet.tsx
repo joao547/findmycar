@@ -17,6 +17,7 @@ import {
 import Select, { SingleValue } from 'react-select';
 import { useState } from 'react';
 import useRegisterStep from '../../../../data/useRegisterStep';
+import { AvatarInput } from './AvatarInput';
 
 type RegisterFieldSetProps = MultiStepFields & {
   registerType: string;
@@ -53,6 +54,7 @@ export function RegisterFieldSet({
   if (registerType === 'CLIENTE') {
     return (
       <fieldset className='flex flex-col gap-4 mt-0'>
+        <AvatarInput />
         <TextInput.layout>
           <TextInput.icon Icon={User} />
           <TextInput.inputText

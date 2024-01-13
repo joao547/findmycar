@@ -19,12 +19,8 @@ export function SignupMultiStep({
 
   return (
     <div className='w-full h-full flex flex-col p-4'>
-      <button>
-        <CaretLeft
-          size={32}
-          className='mt-12'
-          onClick={() => handleAuthenticateUser('login')}
-        />
+      <button className='h-8'>
+        <CaretLeft size={32} onClick={() => handleAuthenticateUser('login')} />
       </button>
       <StepsWrapper>
         {Array.from({ length: 3 }, (_, i) => i).map((step) => (
