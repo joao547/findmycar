@@ -58,16 +58,4 @@ public class UsuarioController {
 
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/{consultorId}/foto")
-    public void uploadFotoPerfil(@PathVariable Long consultorId, @RequestParam("file") MultipartFile file) {
-        usuarioService.uploadFotoPerfil(consultorId, file);
-    }
-
-    @GetMapping("/{consultorId}/foto")
-    public byte[] downloadFotoPerfil(@PathVariable Long consultorId) {
-        return usuarioService.downloadFotoPerfil(consultorId);
-    }
-
-
 }

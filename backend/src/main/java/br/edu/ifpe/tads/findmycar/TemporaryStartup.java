@@ -22,7 +22,7 @@ public class TemporaryStartup {
     }
 
 
-    @PostConstruct
+   // @PostConstruct
     public void criarUsuarioInicial() {
         Cliente cliente = new Cliente();
         cliente.setEmail("cliente@email.com");

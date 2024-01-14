@@ -12,23 +12,36 @@ import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
 import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
 import br.edu.ifpe.tads.findmycar.repository.UsuarioRepository;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
     private final ConsultorRepository consultorRepository;
     private final ClienteRepository clienteRepository;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
     private final JWTUtil jwtUtil;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     public UsuarioServiceImpl(ConsultorRepository consultorRepository, ClienteRepository clienteRepository, PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository, JWTUtil jwtUtil) {
         this.consultorRepository = consultorRepository;
@@ -40,7 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<Usuario> findUsuarioByEmail(String email) {
-        return this.usuarioRepository.findUsuarioByEmail(email);
+        return this.usuarioRepository.findByEmail(email);
     }
 
     @Override
@@ -48,7 +61,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         UsuarioDTOInfo usuarioDTOInfo;
         String email = jwtUtil.getEmailFromToken(jwt);
 
-        Optional<Usuario> usuario = this.usuarioRepository.findUsuarioByEmail(email);
+        Optional<Usuario> usuario = this.usuarioRepository.findByEmail(email);
         if (usuario.isEmpty())
             return Optional.empty();
 
@@ -86,21 +99,54 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public void criarUsuario(UsuarioDto dto, MultipartFile file) throws BadRequestException {
+        String fileLocation = salvarArquivo(file);
         if (TipoUsuario.CONSULTOR.equals(dto.getTipo())){
-            this.consultorRepository.save(criarConsultor(dto, file));
+            this.consultorRepository.save(criarConsultor(dto, fileLocation));
         }
         else if(TipoUsuario.CLIENTE.equals(dto.getTipo())){
-            this.clienteRepository.save(criarCliente(dto, file));
+            this.clienteRepository.save(criarCliente(dto, fileLocation));
         }
         else {
             throw new BadRequestException("Tipo de usuário não pode ser aceito");
         }
     }
 
+    private String salvarArquivo(MultipartFile file) {
+        try {
+            Path filePath = Path.of(uploadDir, file.getOriginalFilename());
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            byte[] fileContent = Files.readAllBytes(filePath);
+            return java.util.Base64.getEncoder().encodeToString(fileContent);
+        }catch (IOException e) {
+            return "";
+        }
+    }
+
+    private String convertFileToBase64(MultipartFile file) {
+        String fileBase64 = "";
+        if (file == null) {
+            return "";
+        }
+
+        if (file.isEmpty()) {
+            return "";
+        }
+
+        try{
+            byte[] image = Base64.encodeBase64(file.getBytes(), false);
+            fileBase64 = new String(image);
+        } catch(Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return fileBase64;
+    }
+
     @Override
     public void atualizarUsuario(UsuarioDto dto, String tokenJWT) {
         String email = this.jwtUtil.getEmailFromToken(tokenJWT);
-        Optional<Usuario> usuario = this.usuarioRepository.findUsuarioByEmail(email);
+        Optional<Usuario> usuario = this.usuarioRepository.findByEmail(email);
 
         if (usuario.isEmpty())
             throw new UsernameNotFoundException("User not found");
@@ -118,7 +164,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
-    private Consultor criarConsultor(UsuarioDto dto, MultipartFile file){
+    private Consultor criarConsultor(UsuarioDto dto, String file){
         Consultor consultor = new Consultor();
         consultor.setEmail(dto.getEmail());
         consultor.setNome(dto.getNome());
@@ -129,46 +175,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         consultor.setAreasConsultor(dto.getAreasConsultor());
         consultor.setAreasBuscador(dto.getAreasBuscador());
         consultor.setLocais(dto.getLocais());
-        try {
-            if(!file.isEmpty()){
-            consultor.setFotoPerfil(file.getBytes());}
-        } catch (IOException e) {
-            throw new RuntimeException("erro ao salvar a foto: " + e);
-        }
+        consultor.setFotoPerfil(file);
+
         return consultor;
     }
 
-    private Cliente criarCliente(UsuarioDto dto, MultipartFile file){
+    private Cliente criarCliente(UsuarioDto dto, String file){
         Cliente cliente = new Cliente();
         cliente.setEmail(dto.getEmail());
         cliente.setNome(dto.getNome());
         cliente.setSenha(passwordEncoder.encode(dto.getSenha()));
-        try {
-            if(!file.isEmpty()){
-            cliente.setFotoPerfil(file.getBytes());}
-        } catch (IOException e) {
-            throw new RuntimeException("erro ao salvar a foto: " + e);
-        }
+        cliente.setFotoPerfil(file);
 
         return cliente;
     }
-    public void uploadFotoPerfil(Long consultorId, MultipartFile file) {
-        Consultor consultor = consultorRepository.findById(consultorId)
-                .orElseThrow(() -> new RuntimeException ("não foi possível encontrar o Consultor"));
-
-        try {
-            consultor.setFotoPerfil(file.getBytes());
-            consultorRepository.save(consultor);
-        } catch (IOException e) {
-            throw new RuntimeException("erro ao salvar a foto: " + e);
-        }
-    }
-
-    public byte[] downloadFotoPerfil(Long consultorId) {
-        Consultor consultor = consultorRepository.findById(consultorId)
-                .orElseThrow(() -> new RuntimeException("não foi possível buscar a foto"));
-
-        return consultor.getFotoPerfil();
-    }
-
 }

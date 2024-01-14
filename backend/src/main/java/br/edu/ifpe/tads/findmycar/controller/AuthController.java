@@ -11,14 +11,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin("http://127.0.0.1:5173")
 @RestController
@@ -28,11 +38,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
+    private final PasswordEncoder encoder;
+
     private final UsuarioService usuarioService;
 
-    public AuthController(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UsuarioService usuarioService) {
+    public AuthController(AuthenticationManager authenticationManager, JWTUtil jwtUtil, PasswordEncoder encoder, UsuarioService usuarioService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.encoder = encoder;
         this.usuarioService = usuarioService;
     }
 
@@ -53,10 +66,9 @@ public class AuthController {
     @PostMapping("/criar")
     public ResponseEntity registrarUsuario(@Valid @RequestParam("pessoaJson") String pessoaJson , @RequestParam("file") MultipartFile file){
         ObjectMapper mapper = new ObjectMapper();
-        UsuarioDto pessoa = null;
 
         try {
-            pessoa = mapper.readValue(pessoaJson, UsuarioDto.class);
+            UsuarioDto pessoa  = mapper.readValue(pessoaJson, UsuarioDto.class);
             this.usuarioService.criarUsuario(pessoa, file);
         } catch (BadRequestException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -65,11 +77,7 @@ public class AuthController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Não foi possível ler o json");
         }
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-
-
-
-
 }

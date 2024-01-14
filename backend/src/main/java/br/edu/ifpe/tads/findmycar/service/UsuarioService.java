@@ -15,8 +15,4 @@ public interface UsuarioService {
     Optional<Usuario> findUsuarioByEmail(String email);
     Optional<UsuarioDTOInfo> findUsuarioByJWT(String jwt);
     void atualizarUsuario(UsuarioDto dto, String tokenJWT);
-
-    void uploadFotoPerfil(Long consultorId, MultipartFile file);
-
-    byte[] downloadFotoPerfil(Long consultorId);
 }

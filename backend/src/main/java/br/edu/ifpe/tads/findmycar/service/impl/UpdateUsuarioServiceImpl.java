@@ -33,7 +33,7 @@ public class UpdateUsuarioServiceImpl implements UpdateUsuarioService {
     @Override
     public void updateUsuarioService(UsuarioDto usuarioDto, String tokenJWT) {
         String email = jwtUtil.getEmailFromToken(tokenJWT);
-        Usuario usuario = usuarioRepository.findUsuarioByEmail(email)
+        Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario nao encontrado"));
 
         if (usuarioDto.getTipo().getName().equalsIgnoreCase("consultor")) {

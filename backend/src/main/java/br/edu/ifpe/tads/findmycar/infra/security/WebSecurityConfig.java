@@ -27,6 +27,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Optional;
+
 
 @Configuration
 @EnableWebMvc
@@ -71,8 +73,7 @@ public class WebSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
-                .anyRequest().authenticated()
+                authorize.anyRequest().permitAll()
             );
 
         http.addFilter(new JWTAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil, userDetailsService()));
@@ -87,7 +88,7 @@ public class WebSecurityConfig {
     ) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(pa);
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(userDetailsService());
 
         return new ProviderManager(authenticationProvider);
     }
@@ -95,8 +96,10 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Usuario usuario = this.usuarioRepository.findUsuarioByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email " + username));
+            Optional<Usuario> usuarioOptional = this.usuarioRepository.findByEmail(username);
+            Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email " + username));
+
+            System.out.printf("ACHOU ESSE FILHA DA PUITA %s%n", usuario.toString());
 
             return User.builder()
                 .username(usuario.getEmail())

@@ -1,7 +1,9 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
+import java.sql.Blob;
 import java.util.Set;
 
 @Entity
@@ -17,10 +19,8 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String senha;
-
-    @Lob
-    private byte[] fotoPerfil;
-
+    @Column(columnDefinition="text")
+    private String fotoPerfilBase64;
     @OneToMany(mappedBy = "avaliador")
     private Set<Avaliacao> avaliacoesFeitas;
     @OneToMany(mappedBy = "avaliado")
@@ -74,8 +74,12 @@ public class Usuario {
         this.senha = senha;
     }
 
+    @Override
+    public String toString() {
+        return String.format("nome: %s, email:%s, senha: %s", this.nome, this.email, this.senha);
+    }
 
-    public byte[] getFotoPerfil() {return fotoPerfil;}
+    public String getFotoPerfil() {return fotoPerfilBase64;}
 
-    public void setFotoPerfil(byte[] fotoPerfil) {this.fotoPerfil = fotoPerfil;}
+    public void setFotoPerfil(String fotoPerfilBase64) {this.fotoPerfilBase64 = fotoPerfilBase64;}
 }
