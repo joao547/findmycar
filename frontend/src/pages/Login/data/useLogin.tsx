@@ -14,7 +14,7 @@ export type MultiStepDataInput = {
 
 export const mapRequestBody = (body: MultiStepDataInput) => {
   const result = {
-    avatar: body.avatar,
+    
     nome: body.nome,
     email: body.email,
     senha: body.senha,
@@ -31,8 +31,6 @@ export const mapRequestBody = (body: MultiStepDataInput) => {
       (areaConsultor) => areaConsultor.value,
     ),
   };
-
-  console.log(result);
   return result;
 };
 
@@ -51,6 +49,29 @@ function useLogin() {
   };
 
   const handleCreateUser = async (user: MultiStepDataInput) => {
+    try {
+      const body = mapRequestBody(user);
+  
+      const formData = new FormData();
+      formData.append('file', user.avatar);
+      formData.append('pessoaJson', JSON.stringify(body));
+  
+      const response = await api.post('/api/auth/criar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log(response.data);
+  
+      return response.data;
+    } catch (err) {
+      console.error('Error:', err);
+      throw new Error(err.message || 'An error occurred during user creation.');
+    }
+  };
+
+  const handleCreateUserold = async (user: MultiStepDataInput) => {
     try {
       const body = mapRequestBody(user);
       const { data } = await api.post('/api/auth/criar', body);

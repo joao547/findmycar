@@ -10,24 +10,28 @@ public class UsuarioDTOInfo {
     private final Double precoServico;
     private final String areaAtuacao;
     private final String tipo;
+    private final String imagemBase64;
 
-    public UsuarioDTOInfo(Long id, String nome, String email, Double precoServico, String areaAtuacao, String tipo) {
+    public UsuarioDTOInfo(Long id, String nome, String email, Double precoServico, String areaAtuacao, String tipo, String imagemBase64) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.precoServico = precoServico;
         this.areaAtuacao = areaAtuacao;
         this.tipo = tipo;
+        this.imagemBase64 = imagemBase64;
     }
 
-    public UsuarioDTOInfo(Long id, String nome, String email, String tipo) {
+    public UsuarioDTOInfo(Long id, String nome, String email, String tipo, String imagemBase64) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.precoServico = null;
         this.areaAtuacao = null;
         this.tipo = tipo;
+        this.imagemBase64 = imagemBase64;
     }
+
     public Long getId() {
         return this.id;
     }
@@ -50,5 +54,9 @@ public class UsuarioDTOInfo {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getImagemBase64() {
+        return imagemBase64;
     }
 }

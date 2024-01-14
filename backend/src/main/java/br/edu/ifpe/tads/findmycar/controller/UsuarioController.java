@@ -5,9 +5,11 @@ import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
 import br.edu.ifpe.tads.findmycar.service.UpdateUsuarioService;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("http://127.0.0.1:5173")
 @RestController
