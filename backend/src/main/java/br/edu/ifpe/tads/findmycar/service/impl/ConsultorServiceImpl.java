@@ -35,7 +35,7 @@ public class ConsultorServiceImpl implements ConsultorService {
         return consultorRepository.getBuscadores(areas);
     }
 
-    public List<Consultor> getMecanicos(List<Long> locais, List<String> areaAtuacao) {
+    public List<Consultor> getMecanicos(String locais, List<String> areaAtuacao) {
         List<Consultor> consultores = this.consultorRepository.getMecanicos(locais);
         if (consultores.isEmpty()) {
             return (List<Consultor>) ResponseEntity.notFound().build();
@@ -43,7 +43,7 @@ public class ConsultorServiceImpl implements ConsultorService {
         return consultores;
     }
     @Override
-    public List<ConsultorDTO> getConsultores(String tipoConsultor, List<String> areasBuscador, List<Long> locaisAtuacao, List<String> areasConsultor){
+    public List<ConsultorDTO> getConsultores(String tipoConsultor, List<String> areasBuscador, String locaisAtuacao, List<String> areasConsultor){
         List<Consultor> consultores = new ArrayList<>();
 
         if (tipoConsultor.equals("buscador")) {

@@ -41,16 +41,16 @@ public class ConsultorController {
     }*/
     @GetMapping("/buscar")
     public ResponseEntity<List<ConsultorDTO>> buscarConsultor(
-        @RequestParam(value = "consultorMecanico", defaultValue = "buscador") String tipoConsultor,
-        @RequestParam(value = "areasBuscador", required = false) String[] areasBuscador,
-        @RequestParam(value = "locaisAtuacao", required = false) Long[] locaisAtuacao,
-        @RequestParam(value = "areasConsultor", required = false) String[] areasConsultor
+        @RequestParam(value = "tipoConsultor", defaultValue = "buscador") String tipoConsultor,
+        @RequestParam(value = "servicoBuscador", required = false) String[] servicoBuscador,
+        @RequestParam(value = "locaisAtuacao", required = false) String locaisAtuacao,
+        @RequestParam(value = "carroMarcas", required = false) String[] carroMarcas
 
     ) {List<ConsultorDTO> consultores = consultorService.getConsultores(
             tipoConsultor,
-            List.of(areasBuscador),
-            List.of(locaisAtuacao),
-            List.of(areasConsultor)
+            List.of(servicoBuscador),
+            locaisAtuacao,
+            List.of(carroMarcas)
         );
 
             return ResponseEntity.ok(consultores);

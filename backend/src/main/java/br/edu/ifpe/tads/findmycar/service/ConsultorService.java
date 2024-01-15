@@ -10,7 +10,7 @@ public interface ConsultorService {
 
     public List<Consultor> getBuscadores(List<String> areas) ;
 
-    List<Consultor> getMecanicos(List<Long> locais, List<String> areaAtuacao);
+   // List<Consultor> getMecanicos(List<Long> locais, List<String> areaAtuacao);
 
-    List<ConsultorDTO> getConsultores(String tipoConsultor, List<String> areasBuscador, List<Long> locaisAtuacao, List<String> areasConsultor);
+    List<ConsultorDTO> getConsultores(String tipoConsultor, List<String> areasBuscador, String locaisAtuacao, List<String> areasConsultor);
 }
