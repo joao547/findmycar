@@ -31,14 +31,6 @@ public class ConsultorController {
         return ResponseEntity.ok(consultorService.getAll());
     }
 
-    /*@GetMapping("/buscarBuscadores")
-    public ResponseEntity getByAreasConsultants(@RequestParam("areas") List<String> areas) {
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasConsultants(areas);
-        if (consultoresPorAreas.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(consultoresPorAreas);
-    }*/
     @GetMapping("/buscar")
     public ResponseEntity<List<ConsultorDTO>> buscarConsultor(
         @RequestParam(value = "tipoConsultor", defaultValue = "buscador") String tipoConsultor,

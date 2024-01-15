@@ -35,8 +35,8 @@ public class ConsultorServiceImpl implements ConsultorService {
         return consultorRepository.getBuscadores(areas);
     }
 
-    public List<Consultor> getMecanicos(String locais, List<String> areaAtuacao) {
-        List<Consultor> consultores = this.consultorRepository.getMecanicos(locais);
+    public List<Consultor> getMecanicos(String locais, List<String> carroMarcas) {
+        List<Consultor> consultores = this.consultorRepository.getMecanicos(locais, carroMarcas);
         if (consultores.isEmpty()) {
             return (List<Consultor>) ResponseEntity.notFound().build();
         }
