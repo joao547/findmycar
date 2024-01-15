@@ -70,17 +70,7 @@ public class UpdateUsuarioServiceImpl implements UpdateUsuarioService {
        if (dto.getPrecoDoServico() != null && dto.getPrecoDoServico() != 0.0) {
            consultor.setPrecoDoServico(dto.getPrecoDoServico());
        }*/
-        if (dto.getLocais() != null && dto.getLocais().size() >  0) {
-            consultor.setLocais(dto.getLocais());
-        }
 
-        if (dto.getAreasConsultor() != null && dto.getAreasConsultor().size() >  0) {
-            consultor.setAreasConsultor(dto.getAreasConsultor());
-        }
-
-        if (dto.getAreasBuscador() != null && dto.getAreasBuscador().size() >  0) {
-            consultor.setAreasBuscador(dto.getAreasBuscador());
-        }
        this.consultorRepository.save(consultor);
     }
 

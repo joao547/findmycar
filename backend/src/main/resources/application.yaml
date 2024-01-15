@@ -9,10 +9,15 @@ spring:
     password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
   jwt:
     secret: superHiperMegaTopSecretMessageAquiHereComAindaMaisCaracteresAmigos
     expiration: 600000
+  sql:
+    init:
+      mode: always
 file:
   upload-dir: C:\Users\almei\Pictures\findmycarImagens
+

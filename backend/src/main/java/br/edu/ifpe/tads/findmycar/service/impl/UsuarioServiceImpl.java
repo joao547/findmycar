@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
+import br.edu.ifpe.tads.findmycar.entity.Local;
+import br.edu.ifpe.tads.findmycar.repository.LocalRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,17 +35,25 @@ public class UsuarioServiceImpl implements UsuarioService {
   private final ClienteRepository clienteRepository;
   private final PasswordEncoder passwordEncoder;
   private final UsuarioRepository usuarioRepository;
+  private final LocalRepository localRepository;
   private final JWTUtil jwtUtil;
 
   @Value("${file.upload-dir}")
   private String uploadDir;
 
-  public UsuarioServiceImpl(ConsultorRepository consultorRepository, ClienteRepository clienteRepository,
-      PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository, JWTUtil jwtUtil) {
+  public UsuarioServiceImpl(
+      ConsultorRepository consultorRepository,
+      ClienteRepository clienteRepository,
+      PasswordEncoder passwordEncoder,
+      UsuarioRepository usuarioRepository,
+      LocalRepository localRepository,
+      JWTUtil jwtUtil
+  ) {
     this.consultorRepository = consultorRepository;
     this.clienteRepository = clienteRepository;
     this.passwordEncoder = passwordEncoder;
     this.usuarioRepository = usuarioRepository;
+    this.localRepository = localRepository;
     this.jwtUtil = jwtUtil;
   }
 
@@ -64,17 +76,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     if (consultorOptional.isPresent()) {
       Consultor consultor = consultorOptional.get();
-      usuarioDTOInfo = new UsuarioDTOInfo(
-          consultor.getId(),
-          consultor.getNome(),
-          consultor.getEmail(),
-          consultor.getPrecoDoServico(),
-          consultor.getAreaDeAtuacao(),
-          "CONSULTOR",
-          this.recuperarArquivo(consultor.getFotoPerfil())
-      );
+//      usuarioDTOInfo = new UsuarioDTOInfo(
+//          consultor.getId(),
+//          consultor.getNome(),
+//          consultor.getEmail(),
+//          consultor.getPrecoDoServico(),
+//          consultor.getAreaDeAtuacao(),
+//          "CONSULTOR",
+//          this.recuperarArquivo(consultor.getFotoPerfil())
+//      );
 
-      return Optional.of(usuarioDTOInfo);
+      return Optional.empty();
     }
 
     if (clienteOptional.isPresent()) {
@@ -157,6 +169,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
   }
 
+  private Set<Local> findLocais(Set<Local> locais) {
+    Set<Local> locaisBase = new HashSet<>();
+
+    for (Local local : locais) {
+      locaisBase.add(localRepository.findByIbgeCode(local.getIbgeCode()).orElse(local));
+    }
+
+    return locaisBase;
+  }
+
   private Consultor criarConsultor(UsuarioDto dto, String file) {
     Consultor consultor = new Consultor();
     consultor.setEmail(dto.getEmail());
@@ -165,13 +187,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     // consultor.setDisponibilidade(dto.getDisponibilidade());
     // consultor.setAreaDeAtuacao(dto.getAreaDeAtuacao());
     // consultor.setPrecoDoServico(dto.getPrecoDoServico());
-    consultor.setAreasConsultor(dto.getAreasConsultor());
-    consultor.setAreasBuscador(dto.getAreasBuscador());
-    consultor.setLocais(dto.getLocais());
     consultor.setFotoPerfil(file);
 
     return consultor;
   }
+
 
   private Cliente criarCliente(UsuarioDto dto, String file) {
     Cliente cliente = new Cliente();

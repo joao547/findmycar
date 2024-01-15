@@ -71,10 +71,19 @@ public class WebSecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
+        .authorizeHttpRequests((authorize) -> authorize
+            .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/consultas/**").permitAll()
+              .requestMatchers("/api/**").authenticated()
+        );
 
-    http.addFilter(new JWTAuthorizationFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil,
-        userDetailsService()));
+    http.addFilter(
+      new JWTAuthorizationFilter(
+        authenticationConfiguration.getAuthenticationManager(),
+        jwtUtil,
+        userDetailsService()
+      )
+    );
 
     return http.build();
   }

@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
+import br.edu.ifpe.tads.findmycar.dto.ConsultorDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDTOInfo;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
 import br.edu.ifpe.tads.findmycar.service.ConsultorService;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,23 +39,21 @@ public class ConsultorController {
         }
         return ResponseEntity.ok(consultoresPorAreas);
     }*/
-    @GetMapping("/buscarBuscadores")
-    public ResponseEntity getByAreasConsultants(@RequestBody Map<String, List<String>> requestBody) {
-        List<String> areas = requestBody.get("areas");
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasConsultants(areas);
-        if (consultoresPorAreas.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(consultoresPorAreas);
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ConsultorDTO>> buscarConsultor(
+        @RequestParam(value = "consultorMecanico", defaultValue = "buscador") String tipoConsultor,
+        @RequestParam(value = "areasBuscador", required = false) String[] areasBuscador,
+        @RequestParam(value = "locaisAtuacao", required = false) Long[] locaisAtuacao,
+        @RequestParam(value = "areasConsultor", required = false) String[] areasConsultor
+
+    ) {List<ConsultorDTO> consultores = consultorService.getConsultores(
+            tipoConsultor,
+            List.of(areasBuscador),
+            List.of(locaisAtuacao),
+            List.of(areasConsultor)
+        );
+
+            return ResponseEntity.ok(consultores);
     }
-    @GetMapping("/buscarConsultores")
-    public List<Consultor> getByAreasSeekers(
-            @RequestParam(value = "locais", required = false) List<Long> locais,
-            @RequestParam(value = "areaAtuacao", required = false) List<String> areaAtuacao) {
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasSeekers(locais, areaAtuacao);
-        if (consultoresPorAreas.isEmpty()) {
-            return (List<Consultor>) ResponseEntity.notFound().build();
-        }
-        return (List<Consultor>) ResponseEntity.ok(consultoresPorAreas);
-    }
+
 }
