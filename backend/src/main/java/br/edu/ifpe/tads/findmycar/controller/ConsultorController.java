@@ -40,12 +40,20 @@ public class ConsultorController {
 
     ) {List<ConsultorDTO> consultores = consultorService.getConsultores(
             tipoConsultor,
-            List.of(servicoBuscador),
+            convertArrayToList(servicoBuscador),
             locaisAtuacao,
-            List.of(carroMarcas)
+            convertArrayToList(carroMarcas)
         );
 
             return ResponseEntity.ok(consultores);
+    }
+
+    private List<String> convertArrayToList(String[] array) {
+        if (array != null) {
+            return List.of(array);
+        } else {
+            return null;
+        }
     }
 
 }
