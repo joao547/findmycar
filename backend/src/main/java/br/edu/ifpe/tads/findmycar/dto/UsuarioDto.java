@@ -45,19 +45,19 @@ public class UsuarioDto {
 
     private byte[] fotoPerfil;
 
-    /* public UsuarioDto() {
+     public UsuarioDto() {
     }
 
-   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.tipo = tipo;
-        this.precoDoServico = precoDoServico;
-        this.areaDeAtuacao = areaDeAtuacao;
-        this.disponibilidade = disponibilidade;
-    }*/
+    /*public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
+         this.id = id;
+         this.nome = nome;
+         this.email = email;
+         this.senha = senha;
+         this.tipo = tipo;
+         this.precoDoServico = precoDoServico;
+         this.areaDeAtuacao = areaDeAtuacao;
+         this.disponibilidade = disponibilidade;
+     }*/
    public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<CarroMarcas> carroMarcas, Set<ServicosBuscador> servicosBuscador, byte[] fotoPerfil) {
        this.id = id;
        this.nome = nome;
