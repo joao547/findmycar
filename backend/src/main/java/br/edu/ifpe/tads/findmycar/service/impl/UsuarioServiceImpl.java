@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import br.edu.ifpe.tads.findmycar.entity.Local;
-import br.edu.ifpe.tads.findmycar.repository.LocalRepository;
+import br.edu.ifpe.tads.findmycar.entity.*;
+import br.edu.ifpe.tads.findmycar.repository.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,14 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import br.edu.ifpe.tads.findmycar.controller.exceptions.BadRequestException;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDTOInfo;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
-import br.edu.ifpe.tads.findmycar.entity.Cliente;
-import br.edu.ifpe.tads.findmycar.entity.Consultor;
-import br.edu.ifpe.tads.findmycar.entity.Usuario;
 import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import br.edu.ifpe.tads.findmycar.infra.security.JWTUtil;
-import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
-import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
-import br.edu.ifpe.tads.findmycar.repository.UsuarioRepository;
 import br.edu.ifpe.tads.findmycar.service.UsuarioService;
 
 @Service
@@ -36,6 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
   private final PasswordEncoder passwordEncoder;
   private final UsuarioRepository usuarioRepository;
   private final LocalRepository localRepository;
+  private final CarroMarcasRepository carroMarcasRepository;
+  private final ServicosBuscadorRepository servicosBuscadorRepository;
   private final JWTUtil jwtUtil;
 
   @Value("${file.upload-dir}")
@@ -47,6 +43,8 @@ public class UsuarioServiceImpl implements UsuarioService {
       PasswordEncoder passwordEncoder,
       UsuarioRepository usuarioRepository,
       LocalRepository localRepository,
+      CarroMarcasRepository carroMarcasRepository,
+      ServicosBuscadorRepository servicosBuscadorRepository,
       JWTUtil jwtUtil
   ) {
     this.consultorRepository = consultorRepository;
@@ -54,6 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     this.passwordEncoder = passwordEncoder;
     this.usuarioRepository = usuarioRepository;
     this.localRepository = localRepository;
+    this.carroMarcasRepository = carroMarcasRepository;
+    this.servicosBuscadorRepository = servicosBuscadorRepository;
     this.jwtUtil = jwtUtil;
   }
 
@@ -169,15 +169,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
   }
 
-  private Set<Local> findLocais(Set<Local> locais) {
-    Set<Local> locaisBase = new HashSet<>();
 
-    for (Local local : locais) {
-      locaisBase.add(localRepository.findByIbgeCode(local.getIbgeCode()).orElse(local));
-    }
-
-    return locaisBase;
-  }
 
   private Consultor criarConsultor(UsuarioDto dto, String file) {
     Consultor consultor = new Consultor();
@@ -187,7 +179,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     // consultor.setDisponibilidade(dto.getDisponibilidade());
     // consultor.setAreaDeAtuacao(dto.getAreaDeAtuacao());
     // consultor.setPrecoDoServico(dto.getPrecoDoServico());
-    consultor.setFotoPerfil(file);
+    if(file != null)consultor.setFotoPerfil(file);
+    consultor.setLocais(findLocais(dto.getLocais()));
+    consultor.setCarroMarcas(findCarroMarcas(dto.getCarroMarcas()));
+    consultor.setServicosBuscador(findServicosBuscador(dto.getServicosBuscador()));
 
     return consultor;
   }
@@ -202,4 +197,33 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     return cliente;
   }
+
+  private Set<Local> findLocais(Set<Local> locais) {
+    Set<Local> locaisBase = new HashSet<>();
+
+    for (Local local : locais) {
+      locaisBase.add(localRepository.findByIbgeCode(local.getIbgeCode()).orElse(local));
+    }
+
+    return locaisBase;
+  }
+
+  private Set<CarroMarcas> findCarroMarcas(Set<CarroMarcas> marcas){
+    Set<CarroMarcas> marcasBase = new HashSet<>();
+
+    for(CarroMarcas marca: marcas){
+      marcasBase.add(carroMarcasRepository.findById(marca.getId()).orElse(marca));
+    }
+    return marcasBase;
+  }
+
+  private Set<ServicosBuscador> findServicosBuscador(Set<ServicosBuscador> servicos){
+    Set<ServicosBuscador> marcasBase = new HashSet<>();
+
+    for(ServicosBuscador servico: servicos){
+      marcasBase.add(servicosBuscadorRepository.findById(servico.getId()).orElse(servico));
+    }
+    return marcasBase;
+  }
+
 }

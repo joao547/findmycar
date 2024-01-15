@@ -1,7 +1,9 @@
 package br.edu.ifpe.tads.findmycar.dto;
 
 import br.edu.ifpe.tads.findmycar.annotations.Conditional;
+import br.edu.ifpe.tads.findmycar.entity.CarroMarcas;
 import br.edu.ifpe.tads.findmycar.entity.Local;
+import br.edu.ifpe.tads.findmycar.entity.ServicosBuscador;
 import br.edu.ifpe.tads.findmycar.enums.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -37,16 +39,16 @@ public class UsuarioDto {
 
     private Set<Local> locais;
 
-    private Set<String> areasBuscador;
+    private Set<CarroMarcas> carroMarcas;
 
-    private Set<String> areasConsultor;
+    private Set<ServicosBuscador> servicosBuscador;
 
     private byte[] fotoPerfil;
 
-    public UsuarioDto() {
+    /* public UsuarioDto() {
     }
 
-   /* public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
+   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, double precoDoServico, String areaDeAtuacao, String disponibilidade) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -56,15 +58,15 @@ public class UsuarioDto {
         this.areaDeAtuacao = areaDeAtuacao;
         this.disponibilidade = disponibilidade;
     }*/
-   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<String> areasBuscador, Set<String> areasConsultor, byte[] fotoPerfil) {
+   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<CarroMarcas> carroMarcas, Set<ServicosBuscador> servicosBuscador, byte[] fotoPerfil) {
        this.id = id;
        this.nome = nome;
        this.email = email;
        this.senha = senha;
        this.tipo = tipo;
        this.locais = locais;
-       this.areasBuscador = areasBuscador;
-       this.areasConsultor = areasConsultor;
+       this.carroMarcas = carroMarcas;
+       this.servicosBuscador = servicosBuscador;
        this.fotoPerfil = fotoPerfil;
    }
     public long getId() {
@@ -127,13 +129,22 @@ public class UsuarioDto {
 
     public void setLocais(Set<Local> locais) { this.locais = locais; }
 
-    public Set<String> getAreasBuscador() { return areasBuscador; }
 
-    public void setAreasBuscador(Set<String> areasBuscador) { this.areasBuscador = areasBuscador; }
+    public Set<CarroMarcas> getCarroMarcas() {
+        return carroMarcas;
+    }
 
-    public Set<String> getAreasConsultor() { return areasConsultor; }
+    public void setCarroMarcas(Set<CarroMarcas> carroMarcas) {
+        this.carroMarcas = carroMarcas;
+    }
 
-    public void setAreasConsultor(Set<String> areasConsultor) { this.areasConsultor = areasConsultor; }
+    public Set<ServicosBuscador> getServicosBuscador() {
+        return servicosBuscador;
+    }
+
+    public void setServicosBuscador(Set<ServicosBuscador> servicosBuscador) {
+        this.servicosBuscador = servicosBuscador;
+    }
 
     public TipoUsuario getTipo() {
         return tipo;
