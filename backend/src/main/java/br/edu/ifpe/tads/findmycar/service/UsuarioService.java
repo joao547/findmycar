@@ -17,4 +17,5 @@ public interface UsuarioService {
   Optional<UsuarioDTOInfo> findUsuarioByJWT(String jwt);
 
   void atualizarUsuario(UsuarioDto dto, String tokenJWT);
+  String pegarTipo(String email);
 }

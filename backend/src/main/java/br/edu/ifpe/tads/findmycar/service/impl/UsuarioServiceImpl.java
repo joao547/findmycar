@@ -169,6 +169,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
   }
 
+  @Override
+  public String pegarTipo(String email) {
+    Optional<Usuario> usuario = this.usuarioRepository.findByEmail(email);
+    if (usuario.isPresent()) {
+      Usuario usuario1 = usuario.get();
+      return usuario1.getTipoUsuario();
+    }
+    return "";
+  }
 
 
   private Consultor criarConsultor(UsuarioDto dto, String file) {
@@ -182,6 +191,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     consultor.setServicosBuscador(findServicosBuscador(dto.getServicosBuscador()));
     consultor.setPrecoServicoBuscador(dto.getPrecoServicoBuscador());
     consultor.setPrecoServicoMecanico(dto.getPrecoServicoMecanico());
+    consultor.setTipoUsuario("CONSULTOR");
 
     return consultor;
   }
@@ -193,7 +203,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     cliente.setNome(dto.getNome());
     cliente.setSenha(passwordEncoder.encode(dto.getSenha()));
     cliente.setFotoPerfil(file);
-
+    cliente.setTipoUsuario("CLIENTE");
     return cliente;
   }
 

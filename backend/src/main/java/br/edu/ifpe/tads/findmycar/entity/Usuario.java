@@ -21,6 +21,14 @@ public class Usuario {
   private Set<Avaliacao> avaliacoesFeitas;
   @OneToMany(mappedBy = "avaliado")
   private Set<Avaliacao> avaliacoesRecebidas;
+  private String tipoUsuario;
+  public String getTipoUsuario() {
+    return tipoUsuario;
+  }
+
+  public void setTipoUsuario(String tipoUsuario) {
+    this.tipoUsuario = tipoUsuario;
+  }
 
   public void setId(Long id) {
     this.id = id;

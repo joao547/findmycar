@@ -40,9 +40,9 @@ public class AuthController {
     Authentication authenticationRequests = UsernamePasswordAuthenticationToken
         .unauthenticated(credencialsDTO.getEmail(), credencialsDTO.getPassword());
     Authentication authenticationResponse = this.authenticationManager.authenticate(authenticationRequests);
-
+    String tipousuario = this.usuarioService.pegarTipo(credencialsDTO.getEmail());
     User usuario = (User) authenticationResponse.getPrincipal();
-    String token = jwtUtil.generateToken(usuario.getUsername());
+    String token = jwtUtil.generateToken(usuario.getUsername(), tipousuario);
 
     AuthenticationSucessfull authenticationSucessfull = new AuthenticationSucessfull(token);
 
