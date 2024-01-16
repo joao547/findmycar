@@ -1,6 +1,5 @@
 package br.edu.ifpe.tads.findmycar.dto;
 
-import br.edu.ifpe.tads.findmycar.annotations.Conditional;
 import br.edu.ifpe.tads.findmycar.entity.CarroMarcas;
 import br.edu.ifpe.tads.findmycar.entity.Local;
 import br.edu.ifpe.tads.findmycar.entity.ServicosBuscador;
@@ -30,13 +29,6 @@ public class UsuarioDto {
     @NotNull
     private TipoUsuario tipo;
 
-   // private Double precoDoServico;
-
-    //private String areaDeAtuacao;
-
-    //private String disponibilidade;
-
-
     private Set<Local> locais;
 
     private Set<CarroMarcas> carroMarcas;
@@ -44,6 +36,9 @@ public class UsuarioDto {
     private Set<ServicosBuscador> servicosBuscador;
 
     private byte[] fotoPerfil;
+    private double precoServicoBuscador;
+    private double precoServicoMecanico;
+
 
      public UsuarioDto() {
     }
@@ -58,7 +53,8 @@ public class UsuarioDto {
          this.areaDeAtuacao = areaDeAtuacao;
          this.disponibilidade = disponibilidade;
      }*/
-   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<CarroMarcas> carroMarcas, Set<ServicosBuscador> servicosBuscador, byte[] fotoPerfil) {
+   public UsuarioDto(long id, String nome, String email, String senha, TipoUsuario tipo, Set<Local> locais, Set<CarroMarcas> carroMarcas, Set<ServicosBuscador> servicosBuscador, byte[] fotoPerfil,
+                     double precoServicoBuscador, double precoServicoMecanico) {
        this.id = id;
        this.nome = nome;
        this.email = email;
@@ -68,6 +64,8 @@ public class UsuarioDto {
        this.carroMarcas = carroMarcas;
        this.servicosBuscador = servicosBuscador;
        this.fotoPerfil = fotoPerfil;
+       this.precoServicoMecanico = precoServicoMecanico;
+       this.precoServicoBuscador = precoServicoBuscador;
    }
     public long getId() {
         return id;
@@ -101,29 +99,21 @@ public class UsuarioDto {
         this.senha = senha;
     }
 
-    /*public Double getPrecoDoServico() {
-        return precoDoServico;
+    public double getPrecoServicoBuscador() {
+        return precoServicoBuscador;
     }
 
-    public void setPrecoDoServico(Double precoDoServico) {
-        this.precoDoServico = precoDoServico;
+    public void setPrecoServicoBuscador(double precoServicoBuscador) {
+        this.precoServicoBuscador = precoServicoBuscador;
     }
 
-    public String getAreaDeAtuacao() {
-        return areaDeAtuacao;
+    public double getPrecoServicoMecanico() {
+        return precoServicoMecanico;
     }
 
-    public void setAreaDeAtuacao(String areaDeAtuacao) {
-        this.areaDeAtuacao = areaDeAtuacao;
+    public void setPrecoServicoMecanico(double precoServicoMecanico) {
+        this.precoServicoMecanico = precoServicoMecanico;
     }
-
-    public String getDisponibilidade() {
-        return disponibilidade;
-    }
-
-    public void setDisponibilidade(String disponibilidade) {
-        this.disponibilidade = disponibilidade;
-    }*/
 
     public Set<Local> getLocais() { return locais; }
 

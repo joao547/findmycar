@@ -176,13 +176,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     consultor.setEmail(dto.getEmail());
     consultor.setNome(dto.getNome());
     consultor.setSenha(passwordEncoder.encode(dto.getSenha()));
-    // consultor.setDisponibilidade(dto.getDisponibilidade());
-    // consultor.setAreaDeAtuacao(dto.getAreaDeAtuacao());
-    // consultor.setPrecoDoServico(dto.getPrecoDoServico());
     if(file != null)consultor.setFotoPerfil(file);
     consultor.setLocais(findLocais(dto.getLocais()));
     consultor.setCarroMarcas(findCarroMarcas(dto.getCarroMarcas()));
     consultor.setServicosBuscador(findServicosBuscador(dto.getServicosBuscador()));
+    consultor.setPrecoServicoBuscador(dto.getPrecoServicoBuscador());
+    consultor.setPrecoServicoMecanico(dto.getPrecoServicoMecanico());
 
     return consultor;
   }
