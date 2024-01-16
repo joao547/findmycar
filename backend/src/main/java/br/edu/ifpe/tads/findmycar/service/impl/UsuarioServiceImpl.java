@@ -76,17 +76,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     if (consultorOptional.isPresent()) {
       Consultor consultor = consultorOptional.get();
-//      usuarioDTOInfo = new UsuarioDTOInfo(
-//          consultor.getId(),
-//          consultor.getNome(),
-//          consultor.getEmail(),
-//          consultor.getPrecoDoServico(),
-//          consultor.getAreaDeAtuacao(),
-//          "CONSULTOR",
-//          this.recuperarArquivo(consultor.getFotoPerfil())
-//      );
+      usuarioDTOInfo = new UsuarioDTOInfo(
+          consultor.getId(),
+          consultor.getNome(),
+          consultor.getEmail(),
+         //consultor.getPrecoDoServico(),
+          //consultor.getAreaDeAtuacao(),
+          "CONSULTOR",
+          this.recuperarArquivo(consultor.getFotoPerfil())
+      );
 
-      return Optional.empty();
+      return Optional.of(usuarioDTOInfo);
     }
 
     if (clienteOptional.isPresent()) {
