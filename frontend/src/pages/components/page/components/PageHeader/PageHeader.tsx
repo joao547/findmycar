@@ -26,10 +26,10 @@ export function PageHeader() {
     <header className='h-ful flex items-center p-4 justify-between'>
       <h1 className='font-semibold text-2xl'>{currentRouteName}</h1>
       <div className='flex items-center gap-8'>
-        <button>
+        <button className='shadow-md p-2 bg-slate-50 rounded-full'>
           <EnvelopeSimple size={32} />
         </button>
-        <button>
+        <button className='shadow-md p-2 bg-slate-50 rounded-full'>
           <Bell size={32} />
         </button>
 

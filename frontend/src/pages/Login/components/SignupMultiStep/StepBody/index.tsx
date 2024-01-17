@@ -30,6 +30,8 @@ const multiStepData = {
   email: '',
   senha: '',
   tipo: '',
+  precoServicoBuscador: 0.0,
+  precoServicoMecanico: 0.0,
   avatar: {} as File,
   locais: [],
   areasBuscador: [],

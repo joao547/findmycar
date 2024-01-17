@@ -1,26 +1,18 @@
 import {
   CurrencyDollar,
   EnvelopeSimple,
-  GearSix,
   Lock,
-  MapPin,
   SuitcaseSimple,
   User,
   Wrench,
 } from '@phosphor-icons/react';
 import { TextInput } from '../../../../../../components';
 import { MultiStepFields } from '../../StepBody';
-import {
-  optionsBuscador,
-  groupedOptions,
-  statesOptions,
-  CityOpt,
-} from '../../../../data/signupMultiStepSelectOptions';
-import Select, { SingleValue } from 'react-select';
+import Select from 'react-select';
 import { useState } from 'react';
-import useRegisterStep from '../../../../data/useRegisterStep';
 import { AvatarInput } from './AvatarInput';
-import { InputText } from '../../../../../../components/Input/InputText';
+import { MechanicConsultantInputs } from './MechanicConsultantInputs';
+import useSelectData from '../../../../data/useRegisterSelectData';
 
 type RegisterFieldSetProps = MultiStepFields & {
   registerType: string;
@@ -31,29 +23,9 @@ export function RegisterFieldSet({
   updateFieldHandler,
   data,
 }: RegisterFieldSetProps) {
-  const { handlerLoadCitiesOptions } = useRegisterStep();
   const [isMecanicalConsultant, setIsMecanicalConsultant] = useState(false);
+  const { servicosBuscador, carroMarcas } = useSelectData();
 
-  const [selectedUf, setSelectedUf] = useState('');
-  const [cityOptions, setCityOptions] = useState<Array<CityOpt>>([]);
-
-  async function handlerSelectUf(
-    newValue: SingleValue<{
-      label: string;
-      value: string;
-    }>,
-  ) {
-    if (newValue?.value) {
-      try {
-        const data = await handlerLoadCitiesOptions(newValue?.value as string);
-
-        setCityOptions(data);
-        setSelectedUf(newValue?.value);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
   if (registerType === 'CLIENTE') {
     return (
       <fieldset className='flex flex-col gap-4 mt-0'>
@@ -141,8 +113,8 @@ export function RegisterFieldSet({
       >
         <TextInput.icon Icon={SuitcaseSimple} />
         <Select
-          options={optionsBuscador}
-          placeholder='Area de Atuação'
+          options={servicosBuscador}
+          placeholder='Tipo de Atuação'
           isMulti
           onChange={(newValue) =>
             updateFieldHandler('areasConsultor', newValue)
@@ -156,6 +128,9 @@ export function RegisterFieldSet({
             placeholder='valor Da Busca'
             name='inputBusca'
             id='inputBusca'
+            onChange={(e) =>
+              updateFieldHandler('precoServicoBuscador', e.target.value)
+            }
           />
         </div>
       </div>
@@ -176,52 +151,21 @@ export function RegisterFieldSet({
             <TextInput.inputText
               type='number'
               placeholder='valor Da Consulta Mecanica'
-              name='inputBusca'
-              id='inputBusca'
+              name='inputMecanico'
+              id='inputMecanico'
+              onChange={(e) =>
+                updateFieldHandler('precoServicoMecanico', e.target.value)
+              }
             />
           </div>
         )}
       </div>
-      {isMecanicalConsultant && (
-        <>
-          <div
-            className='flex gap-2 border-2 mr-3 py-1 px-2 
-				items-center text-gray-500 rounded-lg col-span-2'
-          >
-            <TextInput.icon Icon={GearSix} />
-            <Select
-              className=''
-              options={groupedOptions}
-              placeholder='Opções de Consulta'
-              isMulti
-              onChange={(newValue) =>
-                updateFieldHandler('areasBuscador', newValue)
-              }
-            />
-          </div>
-          <div
-            className='flex gap-2 border-2 mr-3 py-1 px-2 
-				items-center text-gray-500 rounded-lg col-span-2'
-          >
-            <TextInput.icon Icon={MapPin} />
-            <Select
-              options={statesOptions}
-              placeholder='Local de atuação'
-              onChange={handlerSelectUf}
-              menuPlacement='top'
-            />
-            {selectedUf && (
-              <Select
-                options={cityOptions}
-                placeholder='Cidades de atuação'
-                onChange={(newValue) => updateFieldHandler('locais', newValue)}
-                isMulti
-                menuPlacement='top'
-              />
-            )}
-          </div>
-        </>
-      )}
+      <MechanicConsultantInputs
+        data={data}
+        isMecanicalConsultant={isMecanicalConsultant}
+        updateFieldHandler={updateFieldHandler}
+        mechanicalOptions={carroMarcas}
+      />
     </fieldset>
   );
 }
