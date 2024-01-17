@@ -9,6 +9,32 @@ import useSelectData from '../../../Login/data/useRegisterSelectData';
 import { api } from '../../../../service/api';
 import { ufOptions } from '../../../../helpers/selectOptions';
 
+type ConsultantService = {
+  id: number;
+  nome: string;
+};
+
+export type Consultant = {
+  idConsultor: number;
+  nome: string;
+  localidades: Array<{
+    id: number;
+    ibgeCode: number;
+    uf: string;
+    name: string;
+  }>;
+  servicosBuscador: Array<ConsultantService> | null;
+  carroMarcas: Array<ConsultantService> | null;
+  mediaNota: number;
+  precoServico: number;
+  fotoBase64: string;
+  localidade: Array<{
+    id: number;
+    ibgeCode: number;
+    uf: string;
+    name: string;
+  }>;
+};
 type QueryParams = {
   tipoConsultor: string;
   servicoBuscador: string;
@@ -28,7 +54,7 @@ function removeUndefinedProps(obj: any): any {
 
 export function ClientHome() {
   const { servicosBuscador, carroMarcas } = useSelectData();
-  const [consultants, setConsultants] = useState([]);
+  const [consultants, setConsultants] = useState<Consultant[]>([]);
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -37,11 +63,19 @@ export function ClientHome() {
   const selectBuscador = useRef<any>(null);
 
   function handleToggle() {
+    if (selectBuscador.current) {
+      selectBuscador.current.clearValue();
+    }
+
     setIsChecked(!isChecked);
   }
 
   function handlerClearFilter() {
     setIsChecked(false);
+
+    if (selectBuscador.current) {
+      selectBuscador.current.clearValue();
+    }
 
     if (ufSelectRef.current) {
       ufSelectRef.current.clearValue();
@@ -105,6 +139,7 @@ export function ClientHome() {
               placeholder='Tipo de consultoria'
               ref={selectBuscador}
               isMulti
+              isDisabled={isChecked}
             />
           </div>
 
@@ -158,12 +193,10 @@ export function ClientHome() {
 
         <ul className='grid grid-cols-4 gap-4'>
           {consultants.length > 0 &&
-            consultants.map((consultant: any) => (
+            consultants.map((consultant) => (
               <ConsultantProfile
-                key={consultant.nome}
-                consultantName={consultant.nome}
-                consultantArea='carros raros'
-                consultantCities='Recife, Olinda'
+                key={consultant.idConsultor}
+                consultant={consultant}
               />
             ))}
         </ul>

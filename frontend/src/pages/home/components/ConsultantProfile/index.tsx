@@ -1,16 +1,23 @@
+import { CurrencyDollar } from '@phosphor-icons/react';
 import ConsultantRate from '../ConsultantRate';
+import { Consultant } from '../clientHome/ClientHome';
 
 type ConsultantProfileProps = {
-  consultantName: string;
-  consultantCities: string;
-  consultantArea: string;
+  consultant: Consultant;
 };
 
 export default function ConsultantProfile({
-  consultantArea,
-  consultantCities,
-  consultantName,
+  consultant,
 }: ConsultantProfileProps) {
+  const locations = consultant?.localidade
+    ?.map((place) => place.name)
+    .join(',');
+  const services = consultant?.servicosBuscador
+    ?.map((service) => service.nome)
+    .join(',');
+
+  const carModels = consultant?.carroMarcas?.map((car) => car.nome).join(',');
+
   return (
     <li
       className='group bg-white w-full h-80 p-4 rounded-md 
@@ -18,14 +25,21 @@ export default function ConsultantProfile({
     >
       <div className='flex flex-col h-full w-full'>
         <h1 className='text-black font-bold group-hover:text-white '>
-          {consultantName}
+          {consultant.nome}
         </h1>
         <span className='text-gray-500 font-light group-hover:text-white'>
-          {consultantCities}
+          {locations ? locations : 'consultor buscador'}
         </span>
         <hr />
         <section className='text-gray-500 mt-6 group-hover:text-white'>
-          {consultantArea}
+          {services ? services : carModels}
+        </section>
+
+        <section className='text-gray-500 mt-6 group-hover:text-white flex items-center'>
+          <p className='text-green-500 font-medium text-2xl'>
+            {consultant.precoServico}
+          </p>{' '}
+          <CurrencyDollar size={24} />
         </section>
 
         <ConsultantRate />
