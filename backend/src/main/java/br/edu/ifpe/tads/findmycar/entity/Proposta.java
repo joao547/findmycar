@@ -26,6 +26,32 @@ public class Proposta {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
+    private double valorFechado;
+
+    public Date getDataDaProposta() {
+        return dataDaProposta;
+    }
+
+    public void setDataDaProposta(Date dataDaProposta) {
+        this.dataDaProposta = dataDaProposta;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public double getValorFechado() {
+        return valorFechado;
+    }
+
+    public void setValorFechado(double valorFechado) {
+        this.valorFechado = valorFechado;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
