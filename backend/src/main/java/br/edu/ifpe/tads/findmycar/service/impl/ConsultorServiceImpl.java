@@ -57,17 +57,33 @@ public class ConsultorServiceImpl implements ConsultorService {
 
         if (tipoConsultor.equals("buscador")) {
             consultores = this.getBuscadores(areasBuscador);
+
+
+            return consultores.stream().map(consultor -> new ConsultorDTO(
+                    consultor.getId(),
+                    consultor.getNome(),
+                    null,
+                    consultor.getServicosBuscador(),
+                    null,
+                    5L,
+                    consultor.getPrecoServicoBuscador(),
+                    recuperarArquivo(consultor.getFotoPerfil())
+            )).toList();
         } else {
             consultores = this.getMecanicos(locaisAtuacao, areasConsultor);
+            return consultores.stream().map(consultor -> new ConsultorDTO(
+                    consultor.getId(),
+                    consultor.getNome(),
+                    consultor.getLocais(),
+                    null,
+                    consultor.getCarroMarcas(),
+                    5L,
+                    consultor.getPrecoServicoMecanico(),
+                    recuperarArquivo(consultor.getFotoPerfil())
+            )).toList();
         }
 
-        return consultores.stream().map(consultor -> new ConsultorDTO(
-            consultor.getNome(),
-            null,
-            null,
-            5L,
-            recuperarArquivo(consultor.getFotoPerfil())
-        )).toList();
+
     }
 
     private String recuperarArquivo(String fileName) {
