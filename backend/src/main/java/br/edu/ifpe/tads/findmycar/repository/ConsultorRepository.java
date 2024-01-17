@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ConsultorRepository extends JpaRepository<Consultor, Long> {
-    @Query(value="SELECT c FROM Consultor c JOIN c.servicosBuscador sb WHERE sb.nome in :areas")
-    List<Consultor> getBuscadores(@Param("areas") List<String> areas);
+    @Query(value="SELECT c FROM Consultor c JOIN c.servicosBuscador sb WHERE sb.id in :areas")
+    List<Consultor> getBuscadores(@Param("areas") List<Long> areas);
 
-    @Query(value = "SELECT c FROM Consultor c JOIN c.locais l JOIN c.carroMarcas cm WHERE  l.uf = :locais AND cm.nome in :marcas")
-    List<Consultor> getMecanicos(@Param("locais") String locais, @Param("marcas") List<String> marcas);
+    @Query(value = "SELECT c FROM Consultor c JOIN c.locais l JOIN c.carroMarcas cm WHERE  l.uf = :locais AND cm.id in :marcas")
+    List<Consultor> getMecanicos(@Param("locais") String locais, @Param("marcas") List<Long> marcas);
 }

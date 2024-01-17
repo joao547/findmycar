@@ -32,11 +32,20 @@ public class ConsultorServiceImpl implements ConsultorService {
 
 
     public List<Consultor> getBuscadores(List<String> areas) {
-        return consultorRepository.getBuscadores(areas);
+        List<Long> idsArea = new ArrayList<>();
+        for(String area: areas){
+            idsArea.add(Long.parseLong(area));
+        }
+        return consultorRepository.getBuscadores(idsArea);
     }
 
     public List<Consultor> getMecanicos(String locais, List<String> carroMarcas) {
-        List<Consultor> consultores = this.consultorRepository.getMecanicos(locais, carroMarcas);
+        List<Long> idsMarca = new ArrayList<>();
+        for(String marca: carroMarcas){
+            idsMarca.add(Long.parseLong(marca));
+        }
+
+        List<Consultor> consultores = this.consultorRepository.getMecanicos(locais, idsMarca);
         if (consultores.isEmpty()) {
             return (List<Consultor>) ResponseEntity.notFound().build();
         }
