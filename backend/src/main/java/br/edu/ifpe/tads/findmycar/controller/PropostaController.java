@@ -1,9 +1,6 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
-import br.edu.ifpe.tads.findmycar.dto.AceitarPropostaDTO;
-import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
-import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
-import br.edu.ifpe.tads.findmycar.dto.PropostaDTO;
+import br.edu.ifpe.tads.findmycar.dto.*;
 import br.edu.ifpe.tads.findmycar.service.PropostaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -45,6 +42,17 @@ public class PropostaController {
         this.propostaService.aceitarProposta(dto);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/propostasConsultor")
+    public ResponseEntity propostasConsultor(@RequestBody BuscaPropostaDTO dto) {
+        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasConsultor(dto);
+        return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
+    }
+    @GetMapping("/propostasCliente")
+    public ResponseEntity propostasCliente(@RequestBody BuscaPropostaDTO dto)  {
+        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasCliente(dto);
+        return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
     }
 
 }
