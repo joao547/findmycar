@@ -72,10 +72,11 @@ export function ClientHome() {
     console.log(buscadorParams, carroMarcasParams);
 
     const queryParams: QueryParams = {
-      tipoConsultor: 'buscador',
+      tipoConsultor: isChecked ? 'mecanico' : 'buscador',
       servicoBuscador:
         buscadorParams.length > 0 ? buscadorParams.join(',') : undefined,
-      locaisAtuacao: searchStates.length > 0 ? searchStates : undefined,
+      locaisAtuacao:
+        searchStates.length > 0 ? searchStates.join(',') : undefined,
       carroMarcas:
         carroMarcasParams.length > 0 ? carroMarcasParams.join(',') : undefined,
     };
@@ -88,7 +89,7 @@ export function ClientHome() {
         params: removeUndefinedProps(queryParams),
       });
 
-      console.log(data);
+      setConsultants(data);
     } catch (error) {
       console.log(error);
     }
@@ -154,6 +155,18 @@ export function ClientHome() {
           {consultants.length > 0 ? consultants.length : 'Nenhum'} consultor
           disponíveis
         </span>
+
+        <ul className='grid grid-cols-4 gap-4'>
+          {consultants.length > 0 &&
+            consultants.map((consultant: any) => (
+              <ConsultantProfile
+                key={consultant.nome}
+                consultantName={consultant.nome}
+                consultantArea='carros raros'
+                consultantCities='Recife, Olinda'
+              />
+            ))}
+        </ul>
       </div>
     </div>
   );

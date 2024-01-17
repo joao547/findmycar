@@ -13,7 +13,7 @@ export default function ConsultantProfile({
 }: ConsultantProfileProps) {
   return (
     <li
-      className='group bg-white w-80 h-80 p-4 rounded-md 
+      className='group bg-white w-full h-80 p-4 rounded-md 
           hover:bg-orange-500 hover:text-white transition-colors duration-300 ease-in-out'
     >
       <div className='flex flex-col h-full w-full'>
