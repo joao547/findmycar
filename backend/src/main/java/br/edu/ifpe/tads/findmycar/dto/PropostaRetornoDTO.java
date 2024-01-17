@@ -13,6 +13,7 @@ public class PropostaRetornoDTO {
     private String tipoServico;
     private String servicoContratado;
     private String localServico;
+    private  String statusAtual;
     public PropostaRetornoDTO() {
     }
 
@@ -24,6 +25,14 @@ public class PropostaRetornoDTO {
         this.idCliente = idCliente;
         this.valorAcordado = valorAcordado;
         this.dataProposta = dataProposta;
+    }
+
+    public String getStatusAtual() {
+        return statusAtual;
+    }
+
+    public void setStatusAtual(String statusAtual) {
+        this.statusAtual = statusAtual;
     }
 
     public Long getIdProposta() {

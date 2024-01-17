@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.service.impl;
 
+import br.edu.ifpe.tads.findmycar.dto.AceitarPropostaDTO;
 import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.entity.Proposta;
 import br.edu.ifpe.tads.findmycar.entity.enums.Status;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PropostaServiceImpl implements PropostaService {
@@ -49,13 +51,26 @@ public class PropostaServiceImpl implements PropostaService {
            return retornoDto;
         }
 
-        private Proposta gerarProposta(PropostaDTO dto){
+    @Override
+    public void aceitarProposta(AceitarPropostaDTO dto) {
+        Optional<Proposta> propostarep = propostaRepository.findById(dto.getIdProposta());
+        Proposta proposta = propostarep.get();
+        if(dto.isFoiaceita()){
+
+           proposta.setStatus(Status.ACEITO);
+        }else{
+            proposta.setStatus(Status.NAO_ACEITO);
+        }
+        this.propostaRepository.save(proposta);
+    }
+
+    private Proposta gerarProposta(PropostaDTO dto){
             //LocalTime horaAtual = LocalTime.now();
             //Date horaAtualComoDate = java.sql.Timestamp.valueOf(String.valueOf(horaAtual));
             Proposta proposta = new Proposta();
             proposta.setCliente(clienteRepository.getById(dto.getIdCliente()));
             proposta.setConsultor(consultorRepository.getById(dto.getIdConsultor()));
-            proposta.setStatus(Status.valueOf("ESPERANDO"));
+            proposta.setStatus(Status.ESPERANDO);
             proposta.setValorFechado(dto.getValorFechado());
             proposta.setLocalServico(dto.getLocalServico());
             proposta.setTipoServico(dto.getTipoServico());
@@ -76,6 +91,7 @@ public class PropostaServiceImpl implements PropostaService {
             retornoDto.setLocalServico(propostacriada.getLocalServico());
             retornoDto.setTipoServico(propostacriada.getTipoServico());
             retornoDto.setServicoContratado(propostacriada.getServicoContratado());
+            retornoDto.setStatusAtual(String.valueOf(propostacriada.getStatus()));
             return retornoDto;
 
         }

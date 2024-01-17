@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
+import br.edu.ifpe.tads.findmycar.dto.AceitarPropostaDTO;
 import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
 import br.edu.ifpe.tads.findmycar.dto.PropostaDTO;
@@ -37,14 +38,11 @@ public class PropostaController {
         return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/aceitarNegar")
     public ResponseEntity<Void> atualizarUsuario(
-            @RequestBody UsuarioDto dto,
-            HttpServletRequest request
-    ) {
-       // String tokenJWT = getTokenFromRequest(request);
+            @RequestBody AceitarPropostaDTO dto) {
 
-       // updateUsuarioService.updateUsuarioService(dto, tokenJWT);
+        this.propostaService.aceitarProposta(dto);
 
         return ResponseEntity.noContent().build();
     }
