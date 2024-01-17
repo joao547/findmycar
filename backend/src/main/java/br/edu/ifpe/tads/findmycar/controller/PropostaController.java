@@ -45,13 +45,15 @@ public class PropostaController {
     }
 
     @GetMapping("/propostasConsultor")
-    public ResponseEntity propostasConsultor(@RequestBody BuscaPropostaDTO dto) {
-        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasConsultor(dto);
+    public ResponseEntity propostasConsultor(   @RequestParam(value = "idDono", required = true) Long idDono,
+                                                @RequestParam(value = "statusBuscado", required = true) String statusBuscado) {
+        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasConsultor(idDono, statusBuscado);
         return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
     }
     @GetMapping("/propostasCliente")
-    public ResponseEntity propostasCliente(@RequestBody BuscaPropostaDTO dto)  {
-        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasCliente(dto);
+    public ResponseEntity propostasCliente(   @RequestParam(value = "idDono", required = true) Long idDono,
+                                              @RequestParam(value = "statusBuscado", required = true) String statusBuscado)  {
+        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getPropostasCliente(idDono, statusBuscado);
         return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
     }
 

@@ -1,7 +1,6 @@
 package br.edu.ifpe.tads.findmycar.service.impl;
 
 import br.edu.ifpe.tads.findmycar.dto.AceitarPropostaDTO;
-import br.edu.ifpe.tads.findmycar.dto.BuscaPropostaDTO;
 import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.entity.Cliente;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
@@ -62,13 +61,13 @@ public class PropostaServiceImpl implements PropostaService {
     }
 
     @Override
-    public List<PropostaRetornoDTO> getPropostasCliente(BuscaPropostaDTO dto) {
+    public List<PropostaRetornoDTO> getPropostasCliente(Long idDono, String statusBuscado) {
         List<Proposta> todasPropostas;
-        if(Objects.equals(dto.getStatusBuscado(), "ALL")){
-            Cliente cliente = clienteRepository.getReferenceById(dto.getIdDono());
+        if(Objects.equals(statusBuscado, "ALL")){
+            Cliente cliente = clienteRepository.getReferenceById(idDono);
             todasPropostas = propostaRepository.getPropostasClienteAll(cliente.getId());
         }else {
-            todasPropostas = this.propostaRepository.getPropostasCliente(dto.getIdDono(), Status.valueOf(dto.getStatusBuscado()));
+            todasPropostas = this.propostaRepository.getPropostasCliente(idDono, Status.valueOf(statusBuscado));
         }
         List<PropostaRetornoDTO> retornoDTOS = new ArrayList<>();
         if(!todasPropostas.isEmpty()){
@@ -80,13 +79,13 @@ public class PropostaServiceImpl implements PropostaService {
     }
 
     @Override
-    public List<PropostaRetornoDTO> getPropostasConsultor(BuscaPropostaDTO dto) {
+    public List<PropostaRetornoDTO> getPropostasConsultor(Long idDono, String statusBuscado) {
         List<Proposta> todasPropostas;
-        if(Objects.equals(dto.getStatusBuscado(), "ALL")){
-            Consultor consultor = consultorRepository.getReferenceById(dto.getIdDono());
+        if(Objects.equals(statusBuscado, "ALL")){
+            Consultor consultor = consultorRepository.getReferenceById(idDono);
             todasPropostas = propostaRepository.getPropostasConsultorAll(consultor.getId());
         }else{
-        todasPropostas = this.propostaRepository.getPropostasConsultor(dto.getIdDono(), Status.valueOf(dto.getStatusBuscado()));
+        todasPropostas = this.propostaRepository.getPropostasConsultor(idDono, Status.valueOf(statusBuscado));
         }
         List<PropostaRetornoDTO> retornoDTOS = new ArrayList<>();
         if(!todasPropostas.isEmpty()){
