@@ -2,7 +2,9 @@ package br.edu.ifpe.tads.findmycar.entity;
 
 import br.edu.ifpe.tads.findmycar.entity.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
 @Table(name = "proposta")
 public class Proposta {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -20,10 +23,12 @@ public class Proposta {
 
     @ManyToOne
     @JoinColumn(name = "consultor_id", nullable = false)
+    @JsonIgnore
     private Consultor consultor;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.REFRESH)
     private Cliente cliente;
 
     private double valorFechado;

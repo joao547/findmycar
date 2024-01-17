@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -62,6 +63,8 @@ public class Consultor extends Usuario {
     @OneToMany(mappedBy = "consultor")
     private Set<Consulta> consultas;
     @OneToMany(mappedBy = "consultor")
+    @Cascade(CascadeType.ALL)
+    @JsonIgnore
     private Set<Proposta> propostas;
 
 
@@ -114,7 +117,7 @@ public class Consultor extends Usuario {
     }
 
     public Set<Proposta> getPropostas() {
-        return propostas;
+        return this.propostas;
     }
 
     public void setPropostas(Set<Proposta> propostas) {

@@ -1,18 +1,17 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
-import br.edu.ifpe.tads.findmycar.controller.exceptions.BadRequestException;
+import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
-import br.edu.ifpe.tads.findmycar.infra.security.CredencialsDTO;
+import br.edu.ifpe.tads.findmycar.entity.Proposta;
 import br.edu.ifpe.tads.findmycar.infra.security.PropostaDTO;
 import br.edu.ifpe.tads.findmycar.service.PropostaService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
+import br.edu.ifpe.tads.findmycar.service.impl.ConsultorServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -21,16 +20,35 @@ public class PropostaController {
 
     private final PropostaService propostaService;
 
-    public PropostaController(PropostaService propostaService) {
-        this.propostaService = propostaService;
-    }
+    public PropostaController(PropostaService propostaService) { this.propostaService = propostaService;}
 
     @PostMapping("/criar")
     public ResponseEntity<?> criarProposta(@RequestBody PropostaDTO propostaDTO) {
 
 
-        this.propostaService.criarProposta(propostaDTO);
+        PropostaRetornoDTO propostaCriada = this.propostaService.criarProposta(propostaDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(propostaCriada, HttpStatus.CREATED);
+        //return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @GetMapping("/todos")
+    public ResponseEntity getAll(
+    ) {
+        List<PropostaRetornoDTO> propostaRetornoDTOS = propostaService.getAll();
+        return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> atualizarUsuario(
+            @RequestBody UsuarioDto dto,
+            HttpServletRequest request
+    ) {
+       // String tokenJWT = getTokenFromRequest(request);
+
+       // updateUsuarioService.updateUsuarioService(dto, tokenJWT);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
