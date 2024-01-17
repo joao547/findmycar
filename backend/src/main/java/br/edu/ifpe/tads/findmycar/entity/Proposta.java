@@ -32,6 +32,33 @@ public class Proposta {
     private Cliente cliente;
 
     private double valorFechado;
+    private String tipoServico;
+    private String servicoContratado;
+    private String localServico;
+
+    public String getTipoServico() {
+        return tipoServico;
+    }
+
+    public void setTipoServico(String tipoServico) {
+        this.tipoServico = tipoServico;
+    }
+
+    public String getServicoContratado() {
+        return servicoContratado;
+    }
+
+    public void setServicoContratado(String servicoContratado) {
+        this.servicoContratado = servicoContratado;
+    }
+
+    public String getLocalServico() {
+        return localServico;
+    }
+
+    public void setLocalServico(String localServico) {
+        this.localServico = localServico;
+    }
 
     public Date getDataDaProposta() {
         return dataDaProposta;

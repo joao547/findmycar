@@ -2,10 +2,8 @@ package br.edu.ifpe.tads.findmycar.controller;
 
 import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDto;
-import br.edu.ifpe.tads.findmycar.entity.Proposta;
-import br.edu.ifpe.tads.findmycar.infra.security.PropostaDTO;
+import br.edu.ifpe.tads.findmycar.dto.PropostaDTO;
 import br.edu.ifpe.tads.findmycar.service.PropostaService;
-import br.edu.ifpe.tads.findmycar.service.impl.ConsultorServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

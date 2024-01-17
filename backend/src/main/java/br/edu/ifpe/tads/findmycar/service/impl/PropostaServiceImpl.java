@@ -3,16 +3,14 @@ package br.edu.ifpe.tads.findmycar.service.impl;
 import br.edu.ifpe.tads.findmycar.dto.PropostaRetornoDTO;
 import br.edu.ifpe.tads.findmycar.entity.Proposta;
 import br.edu.ifpe.tads.findmycar.entity.enums.Status;
-import br.edu.ifpe.tads.findmycar.infra.security.PropostaDTO;
+import br.edu.ifpe.tads.findmycar.dto.PropostaDTO;
 import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
 import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
 import br.edu.ifpe.tads.findmycar.repository.PropostaRepository;
 import br.edu.ifpe.tads.findmycar.service.PropostaService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,6 +57,9 @@ public class PropostaServiceImpl implements PropostaService {
             proposta.setConsultor(consultorRepository.getById(dto.getIdConsultor()));
             proposta.setStatus(Status.valueOf("ESPERANDO"));
             proposta.setValorFechado(dto.getValorFechado());
+            proposta.setLocalServico(dto.getLocalServico());
+            proposta.setTipoServico(dto.getTipoServico());
+            proposta.setServicoContratado(dto.getServicoContratado());
             //proposta.setDataDaProposta(horaAtualComoDate);
             return proposta;
         }
@@ -72,6 +73,9 @@ public class PropostaServiceImpl implements PropostaService {
             retornoDto.setNomeCliente(propostacriada.getCliente().getNome());
             retornoDto.setIdConsultor(propostacriada.getConsultor().getId());
             retornoDto.setNomeConsultor(propostacriada.getConsultor().getNome());
+            retornoDto.setLocalServico(propostacriada.getLocalServico());
+            retornoDto.setTipoServico(propostacriada.getTipoServico());
+            retornoDto.setServicoContratado(propostacriada.getServicoContratado());
             return retornoDto;
 
         }

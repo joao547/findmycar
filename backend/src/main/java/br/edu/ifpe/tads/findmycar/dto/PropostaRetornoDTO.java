@@ -10,7 +10,9 @@ public class PropostaRetornoDTO {
     private Long idCliente;
     private double valorAcordado;
     private Date dataProposta;
-
+    private String tipoServico;
+    private String servicoContratado;
+    private String localServico;
     public PropostaRetornoDTO() {
     }
 
@@ -78,5 +80,29 @@ public class PropostaRetornoDTO {
 
     public void setDataProposta(Date dataProposta) {
         this.dataProposta = dataProposta;
+    }
+
+    public String getTipoServico() {
+        return tipoServico;
+    }
+
+    public void setTipoServico(String tipoServico) {
+        this.tipoServico = tipoServico;
+    }
+
+    public String getServicoContratado() {
+        return servicoContratado;
+    }
+
+    public void setServicoContratado(String servicoContratado) {
+        this.servicoContratado = servicoContratado;
+    }
+
+    public String getLocalServico() {
+        return localServico;
+    }
+
+    public void setLocalServico(String localServico) {
+        this.localServico = localServico;
     }
 }
