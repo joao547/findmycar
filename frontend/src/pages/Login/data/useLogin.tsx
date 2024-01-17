@@ -63,7 +63,7 @@ function useLogin() {
     try {
       const body = mapRequestBody(user);
 
-      console.log(user.avatar);
+      console.log(body);
 
       const formData = new FormData();
       formData.append('file', user.avatar);
@@ -74,8 +74,6 @@ function useLogin() {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      console.log(response.data);
 
       return response.data;
     } catch (err) {
