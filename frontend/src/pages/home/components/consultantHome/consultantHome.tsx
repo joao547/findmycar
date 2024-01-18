@@ -41,16 +41,27 @@ export function ConsultantHome() {
 
     fetchData();
   }, []);
+
+  if (propostas.length > 0) {
+    return (
+      <div>
+        <h1 className='text-2xl font-medium'>
+          Clientes com Propostas em aberto:{' '}
+        </h1>
+        <div className='grid grid-cols-4 gap-4 mt-4'>
+          {propostas?.map((proposta) => (
+            <PropostaAceitaCard key={proposta.idCliente} proposta={proposta} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h1 className='text-2xl font-medium'>
-        Clientes com Propostas em aberto:{' '}
+        Você não possui Propostas em aberto:{' '}
       </h1>
-      <div className='grid grid-cols-4 gap-4 mt-4'>
-        {propostas.map((proposta) => (
-          <PropostaAceitaCard key={proposta.idCliente} proposta={proposta} />
-        ))}
-      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import { CurrencyDollar, User } from '@phosphor-icons/react';
 import { PropostaAceitaCardData } from '../consultantHome';
+import { ImagemBase64 } from '../../../../components/page/components/PageHeader/components/ImagemBase64';
 
 type PropostaAceitaCardProps = {
   proposta: PropostaAceitaCardData;
@@ -10,8 +11,8 @@ export function PropostaAceitaCard({ proposta }: PropostaAceitaCardProps) {
     <div className='mb-6 w-full rounded-lg bg-white p-6'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center'>
-          <User className='w-8 h-8 rounded-full' />
-          <div>
+          <ImagemBase64 base64String={proposta.fotoBase64 as string} />
+          <div className='ml-4'>
             <h3 className='text-base font-semibold text-gray-900'>
               {proposta.nome}
             </h3>
