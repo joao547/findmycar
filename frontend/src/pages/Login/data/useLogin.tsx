@@ -7,6 +7,8 @@ export type MultiStepDataInput = {
   email: string;
   senha: string;
   tipo: string;
+  precoServicoBuscador: number;
+  precoServicoMecanico: number;
   locais: Array<CityOpt>;
   areasBuscador: Array<GeneralOption>;
   areasConsultor: Array<GeneralOption>;
@@ -14,11 +16,12 @@ export type MultiStepDataInput = {
 
 export const mapRequestBody = (body: MultiStepDataInput) => {
   const result = {
-    
     nome: body.nome,
     email: body.email,
     senha: body.senha,
     tipo: body.tipo,
+    precoServicoBuscador: body.precoServicoBuscador,
+    precoServicoMecanico: body.precoServicoMecanico,
     locais: body.locais.map((location) => {
       return {
         ibgeCode: location.value,
@@ -26,10 +29,18 @@ export const mapRequestBody = (body: MultiStepDataInput) => {
         uf: location.uf,
       };
     }),
-    areasBuscador: body.areasBuscador.map((areaBuscador) => areaBuscador.value),
-    areasConsultor: body.areasConsultor.map(
-      (areaConsultor) => areaConsultor.value,
-    ),
+    carroMarcas: body.areasBuscador.map((areaBuscador) => {
+      return {
+        id: areaBuscador.value,
+        nome: areaBuscador.label,
+      };
+    }),
+    servicosBuscador: body.areasConsultor.map((areasConsultor) => {
+      return {
+        id: areasConsultor.value,
+        nome: areasConsultor.label,
+      };
+    }),
   };
   return result;
 };
@@ -51,19 +62,21 @@ function useLogin() {
   const handleCreateUser = async (user: MultiStepDataInput) => {
     try {
       const body = mapRequestBody(user);
-  
+
+      console.log(user.avatar);
+
       const formData = new FormData();
       formData.append('file', user.avatar);
       formData.append('pessoaJson', JSON.stringify(body));
-  
+
       const response = await api.post('/api/auth/criar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       console.log(response.data);
-  
+
       return response.data;
     } catch (err) {
       console.error('Error:', err);

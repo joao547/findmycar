@@ -1,5 +1,7 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
+import br.edu.ifpe.tads.findmycar.dto.ClienteDTO;
+import br.edu.ifpe.tads.findmycar.dto.ConsultorDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDTOInfo;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
 import br.edu.ifpe.tads.findmycar.service.ConsultorService;
@@ -8,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,31 +32,39 @@ public class ConsultorController {
         return ResponseEntity.ok(consultorService.getAll());
     }
 
-    /*@GetMapping("/buscarBuscadores")
-    public ResponseEntity getByAreasConsultants(@RequestParam("areas") List<String> areas) {
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasConsultants(areas);
-        if (consultoresPorAreas.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(consultoresPorAreas);
-    }*/
-    @GetMapping("/buscarBuscadores")
-    public ResponseEntity getByAreasConsultants(@RequestBody Map<String, List<String>> requestBody) {
-        List<String> areas = requestBody.get("areas");
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasConsultants(areas);
-        if (consultoresPorAreas.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(consultoresPorAreas);
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ConsultorDTO>> buscarConsultor(
+        @RequestParam(value = "tipoConsultor", defaultValue = "buscador") String tipoConsultor,
+        @RequestParam(value = "servicoBuscador", required = false) String[] servicoBuscador,
+        @RequestParam(value = "locaisAtuacao", required = false) String locaisAtuacao,
+        @RequestParam(value = "carroMarcas", required = false) String[] carroMarcas
+
+    ) {List<ConsultorDTO> consultores = consultorService.getConsultores(
+            tipoConsultor,
+            convertArrayToList(servicoBuscador),
+            locaisAtuacao,
+            convertArrayToList(carroMarcas)
+        );
+
+            return ResponseEntity.ok(consultores);
     }
-    @GetMapping("/buscarConsultores")
-    public List<Consultor> getByAreasSeekers(
-            @RequestParam(value = "locais", required = false) List<Long> locais,
-            @RequestParam(value = "areaAtuacao", required = false) List<String> areaAtuacao) {
-        List<Consultor> consultoresPorAreas = consultorService.getByAreasSeekers(locais, areaAtuacao);
-        if (consultoresPorAreas.isEmpty()) {
-            return (List<Consultor>) ResponseEntity.notFound().build();
+
+    private List<String> convertArrayToList(String[] array) {
+        if (array != null) {
+            return List.of(array);
+        } else {
+            return null;
         }
-        return (List<Consultor>) ResponseEntity.ok(consultoresPorAreas);
     }
+
+    @GetMapping("/buscarclientes")
+    public ResponseEntity<List<ClienteDTO>> buscarMeusClientes(
+            @RequestParam(value = "idConsultor") Long idConsultor
+
+    ) {List<ClienteDTO> clientes = consultorService.getMeusClientes(idConsultor);
+
+        return ResponseEntity.ok(clientes);
+    }
+
+
 }

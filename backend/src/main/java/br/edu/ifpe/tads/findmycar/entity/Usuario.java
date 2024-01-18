@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -18,9 +19,19 @@ public class Usuario {
   private String senha;
   private String fotoPerfilBase64;
   @OneToMany(mappedBy = "avaliador")
+  @JsonIgnore
   private Set<Avaliacao> avaliacoesFeitas;
   @OneToMany(mappedBy = "avaliado")
+  @JsonIgnore
   private Set<Avaliacao> avaliacoesRecebidas;
+  private String tipoUsuario;
+  public String getTipoUsuario() {
+    return tipoUsuario;
+  }
+
+  public void setTipoUsuario(String tipoUsuario) {
+    this.tipoUsuario = tipoUsuario;
+  }
 
   public void setId(Long id) {
     this.id = id;

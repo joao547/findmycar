@@ -1,6 +1,7 @@
 import logoImg from '../../../../../assets/findmycar_logo.png';
 import {
   ChatCircleText,
+  Handshake,
   House,
   SignOut,
   UserCircleGear,
@@ -9,7 +10,10 @@ import { NavLink } from 'react-router-dom';
 
 export function PageAside() {
   return (
-    <aside className='bg-white w-[18rem] h-screen flex flex-col items-center p-4 shadow-2xl'>
+    <aside
+      className='bg-white w-[18rem] h-screen flex flex-col items-center p-4 shadow-2xl 
+      min-h-screen'
+    >
       <img src={logoImg} alt='logo' className='w-28' />
       <nav className='mt-16 w-full'>
         <ul className='w-full'>
@@ -27,14 +31,15 @@ export function PageAside() {
           </li>
           <li className='flex items-center justify-center'>
             <NavLink
-              to='/'
+              to='/user/propostas'
               className={({ isActive }) =>
                 isActive
                   ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
                   : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
               }
             >
-              <ChatCircleText className='w-8 h-8 ' /> Chat
+              <Handshake className='w-8 h-8 ' />
+              propostas
             </NavLink>
           </li>
           <li className='flex items-center justify-center'>

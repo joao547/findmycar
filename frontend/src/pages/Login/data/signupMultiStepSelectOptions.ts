@@ -1,5 +1,5 @@
 export type GeneralOption = {
-  value: string;
+  value: string | number;
   label: string;
 };
 

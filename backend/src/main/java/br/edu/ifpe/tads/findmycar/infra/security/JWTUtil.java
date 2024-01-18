@@ -21,12 +21,13 @@ public class JWTUtil {
     @Value("${spring.jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String tipo) {
         try {
             Date date = new Date(System.currentTimeMillis() + expiration);
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withClaim("email", email)
+                    .withClaim("tipo",tipo)
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {

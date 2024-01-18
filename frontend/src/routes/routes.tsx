@@ -3,6 +3,7 @@ import { Page } from '../pages/components/page/Page';
 import { HomePage } from '../pages/home/HomePage';
 import LoginPage from '../pages/Login';
 import { Profile } from '../pages/Profile/Profile';
+import { Proposta } from '../pages/Proposta/Proposta';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: '/user/profile',
         element: <Profile />,
+      },
+      {
+        path: '/user/propostas',
+        element: <Proposta />,
       },
     ],
   },

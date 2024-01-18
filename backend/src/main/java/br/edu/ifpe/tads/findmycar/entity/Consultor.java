@@ -1,27 +1,55 @@
 package br.edu.ifpe.tads.findmycar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("Consultor")
-public class Consultor extends Usuario{
-    private double precoDoServico;
-    private String areaDeAtuacao;
-    private String disponibilidade;
+public class Consultor extends Usuario {
+    // -------------------------------------------
 
-    @ElementCollection
-    @CollectionTable(name="user_listConsultant")
-    private Set<String> areasConsultor = new HashSet<>();
+    // camposBuscador
+    @ManyToMany
+    private Set<ServicosBuscador> servicosBuscador; // carros_antigos, carros_raros, carros_comuns
 
-    @ElementCollection
-    @CollectionTable(name="user_listSeeker")
-    private Set<String> areasBuscador = new HashSet<>();
+    /*
+    const optionsBuscador = [
+        { label: 'carros antigos', value: 'carros antigos' },
+        { label: 'carros raros', value: 'carros raros' },
+        { label: 'carros comuns', value: 'carros comuns' },
+        { label: 'carros econômicos', value: 'carros econômicos' },
+        { label: 'carros esportivos', value: 'carros esportivos' },
+        { label: 'carros zero', value: 'carros zero' },
+    ]
+    */
+
+    @ManyToMany
+    private Set<CarroMarcas> carroMarcas;
+    private double precoServicoBuscador;
+    // camposMecanico
+    private double precoServicoMecanico;
+
+
+    /*
+    export const marcaOptions: readonly MarcaOption[] = [
+      { value: 'BMW', label: 'BMW' },
+      { value: 'Chevrolet', label: 'Chevrolet' },
+      { value: 'Citroen', label: 'Citroen' },
+      { value: 'FIAT', label: 'FIAT' },
+      { value: 'Ford', label: 'Ford'},
+      { value: 'Honda', label: 'Honda'},
+      { value: 'Hyundai', label: 'Hyundai' },
+      { value: 'Peugout', label: 'Peugout' },
+      { value: 'Renault', label: 'Renault' },
+      { value: 'Volkswagen', label: 'Volkswagen' },
+    ];
+    */
 
     @ManyToMany
     @Cascade(CascadeType.ALL)
@@ -35,44 +63,56 @@ public class Consultor extends Usuario{
     @OneToMany(mappedBy = "consultor")
     private Set<Consulta> consultas;
     @OneToMany(mappedBy = "consultor")
+    @Cascade(CascadeType.ALL)
+    @JsonIgnore
     private Set<Proposta> propostas;
-    @ManyToMany
-    @JoinTable(
-            name = "consultor_carro",
-            joinColumns = @JoinColumn(name = "consultor_id"),
-            inverseJoinColumns = @JoinColumn(name = "carro_id"))
-    private Set<Carro> carros;
-
-    public String getAreaDeAtuacao() {
-        return areaDeAtuacao;
+    private double nota;
+    public Set<ServicosBuscador> getServicosBuscador() {
+        return servicosBuscador;
     }
 
-    public void setAreaDeAtuacao(String areaDeAtuacao) {
-        this.areaDeAtuacao = areaDeAtuacao;
+    public void setServicosBuscador(Set<ServicosBuscador> servicosBuscador) {
+        this.servicosBuscador = servicosBuscador;
     }
 
-    public String getDisponibilidade() {
-        return disponibilidade;
+    public Set<CarroMarcas> getCarroMarcas() {
+        return carroMarcas;
     }
 
-    public void setDisponibilidade(String disponibilidade) {
-        this.disponibilidade = disponibilidade;
+    public void setCarroMarcas(Set<CarroMarcas> carroMarcas) {
+        this.carroMarcas = carroMarcas;
     }
 
-    public double getPrecoDoServico() {
-        return precoDoServico;
+    public double getPrecoServicoBuscador() {
+        return precoServicoBuscador;
     }
 
-    public void setPrecoDoServico(double precoDoServico) {
-        this.precoDoServico = precoDoServico;
+    public void setPrecoServicoBuscador(double precoServicoBuscador) {
+        this.precoServicoBuscador = precoServicoBuscador;
     }
 
-    public Set<Carro> getCarros() {
-        return carros;
+    public double getPrecoServicoMecanico() {
+        return precoServicoMecanico;
     }
 
-    public void setCarros(Set<Carro> carros) {
-        this.carros = carros;
+    public void setPrecoServicoMecanico(double precoServicoMecanico) {
+        this.precoServicoMecanico = precoServicoMecanico;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
+    }
+
+    public Set<Local> getLocais() {
+        return locais;
+    }
+
+    public void setLocais(Set<Local> locais) {
+        this.locais = locais;
     }
 
     public Set<Consulta> getConsultas() {
@@ -84,22 +124,10 @@ public class Consultor extends Usuario{
     }
 
     public Set<Proposta> getPropostas() {
-        return propostas;
+        return this.propostas;
     }
 
     public void setPropostas(Set<Proposta> propostas) {
         this.propostas = propostas;
     }
-
-    public Set<String> getAreasConsultor() { return areasConsultor; }
-
-    public void setAreasConsultor(Set<String> areasConsultor) { this.areasConsultor = areasConsultor; }
-
-    public Set<String> getAreasBuscador() { return areasBuscador; }
-
-    public void setAreasBuscador(Set<String> areaBuscador) { this.areasBuscador = areaBuscador; }
-
-    public Set<Local> getLocais() { return locais; }
-
-    public void setLocais(Set<Local> locais) { this.locais = locais; }
 }

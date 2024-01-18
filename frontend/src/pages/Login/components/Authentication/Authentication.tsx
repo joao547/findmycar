@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { TextInput } from '../../../../components';
 import { Logo } from './components/Logo/Logo';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +33,10 @@ export function Authentication({ handleCreateAccount }: AuthenticationProps) {
     });
 
     if (token) {
+      const decoded = jwtDecode(token);
+
       localStorage.setItem('@token', token);
+      localStorage.setItem('@user', JSON.stringify(decoded));
 
       navigate('/user/home');
     }
