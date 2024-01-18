@@ -1,8 +1,14 @@
 package br.edu.ifpe.tads.findmycar.service.impl;
 
+import br.edu.ifpe.tads.findmycar.dto.ClienteDTO;
 import br.edu.ifpe.tads.findmycar.dto.ConsultorDTO;
+import br.edu.ifpe.tads.findmycar.entity.Cliente;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
+import br.edu.ifpe.tads.findmycar.entity.Proposta;
+import br.edu.ifpe.tads.findmycar.entity.enums.Status;
+import br.edu.ifpe.tads.findmycar.repository.ClienteRepository;
 import br.edu.ifpe.tads.findmycar.repository.ConsultorRepository;
+import br.edu.ifpe.tads.findmycar.repository.PropostaRepository;
 import br.edu.ifpe.tads.findmycar.service.ConsultorService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +24,14 @@ public class ConsultorServiceImpl implements ConsultorService {
 
     private final ConsultorRepository consultorRepository;
 
+    private final PropostaRepository propostaRepository;
+
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    public ConsultorServiceImpl(ConsultorRepository consultorRepository) {
+    public ConsultorServiceImpl(ConsultorRepository consultorRepository,  PropostaRepository propostaRepository) {
         this.consultorRepository = consultorRepository;
+        this.propostaRepository = propostaRepository;
     }
 
     @Override
@@ -84,6 +93,21 @@ public class ConsultorServiceImpl implements ConsultorService {
         }
 
 
+    }
+
+    @Override
+    public List<ClienteDTO> getMeusClientes(Long idConsultor) {
+        List<ClienteDTO> listRetorn = new ArrayList<>();
+            List<Proposta> propostas = this.propostaRepository.getPropostasConsultor(idConsultor, Status.ACEITO);
+        if(!propostas.isEmpty()){
+            for (Proposta proposta: propostas){
+                ClienteDTO clienteDTO = new ClienteDTO( proposta.getCliente().getId(), proposta.getCliente().getNome(), proposta.getCliente().getEmail(),proposta.getCliente().getFotoPerfil(),proposta.getValorFechado(),proposta.getTipoServico(),proposta.getServicoContratado());
+                listRetorn.add(clienteDTO);
+            }
+            return listRetorn;
+
+        }
+         return null;
     }
 
     private String recuperarArquivo(String fileName) {

@@ -22,4 +22,6 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     List<Proposta> getPropostasClienteAll(@Param("idcliente") Long idcliente);
     @Query(value="SELECT c FROM Proposta c JOIN c.consultor sb WHERE sb.id = :idconsultor")
     List<Proposta> getPropostasConsultorAll(@Param("idconsultor") Long idconsultor);
+
+
 }

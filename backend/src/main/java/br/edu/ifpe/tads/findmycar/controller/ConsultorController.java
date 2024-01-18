@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.findmycar.controller;
 
+import br.edu.ifpe.tads.findmycar.dto.ClienteDTO;
 import br.edu.ifpe.tads.findmycar.dto.ConsultorDTO;
 import br.edu.ifpe.tads.findmycar.dto.UsuarioDTOInfo;
 import br.edu.ifpe.tads.findmycar.entity.Consultor;
@@ -55,5 +56,15 @@ public class ConsultorController {
             return null;
         }
     }
+
+    @GetMapping("/buscarclientes")
+    public ResponseEntity<List<ClienteDTO>> buscarMeusClientes(
+            @RequestParam(value = "idConsultor") Long idConsultor
+
+    ) {List<ClienteDTO> clientes = consultorService.getMeusClientes(idConsultor);
+
+        return ResponseEntity.ok(clientes);
+    }
+
 
 }
