@@ -101,7 +101,13 @@ public class ConsultorServiceImpl implements ConsultorService {
             List<Proposta> propostas = this.propostaRepository.getPropostasConsultor(idConsultor, Status.ACEITO);
         if(!propostas.isEmpty()){
             for (Proposta proposta: propostas){
-                ClienteDTO clienteDTO = new ClienteDTO( proposta.getCliente().getId(), proposta.getCliente().getNome(), proposta.getCliente().getEmail(),proposta.getCliente().getFotoPerfil(),proposta.getValorFechado(),proposta.getTipoServico(),proposta.getServicoContratado());
+                ClienteDTO clienteDTO = new ClienteDTO( proposta.getCliente().getId(),
+                        proposta.getCliente().getNome(),
+                        proposta.getCliente().getEmail(),
+                        this.recuperarArquivo(proposta.getCliente().getFotoPerfil()),
+                        proposta.getValorFechado(),
+                        proposta.getTipoServico(),
+                        proposta.getServicoContratado());
                 listRetorn.add(clienteDTO);
             }
             return listRetorn;
@@ -111,14 +117,13 @@ public class ConsultorServiceImpl implements ConsultorService {
     }
 
     private String recuperarArquivo(String fileName) {
-        return fileName;
-//        try {
-//            Path filePath = Path.of(uploadDir, fileName);
-//            byte[] fileContent = Files.readAllBytes(filePath);
-//            return java.util.Base64.getEncoder().encodeToString(fileContent);
-//        } catch (Exception e) {
-//            System.out.printf("Erro ao buscar o arquivo de nome [%s]", fileName);
-//            return "";
-//        }
+        try {
+            Path filePath = Path.of(uploadDir, fileName);
+            byte[] fileContent = Files.readAllBytes(filePath);
+            return java.util.Base64.getEncoder().encodeToString(fileContent);
+        } catch (Exception e) {
+            System.out.printf("Erro ao buscar o arquivo de nome [%s]", fileName);
+            return "";
+        }
     }
 }
