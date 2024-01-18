@@ -197,6 +197,7 @@ export function ClientHome() {
               <ConsultantProfile
                 key={consultant.idConsultor}
                 consultant={consultant}
+                isMecanicalConsultant={!isChecked}
               />
             ))}
         </ul>

@@ -1,6 +1,7 @@
 import logoImg from '../../../../../assets/findmycar_logo.png';
 import {
   ChatCircleText,
+  Handshake,
   House,
   SignOut,
   UserCircleGear,
@@ -27,14 +28,15 @@ export function PageAside() {
           </li>
           <li className='flex items-center justify-center'>
             <NavLink
-              to='/'
+              to='/user/propostas'
               className={({ isActive }) =>
                 isActive
                   ? 'flex gap-6 items-center text-orange-500 font-semibold h-24'
                   : 'flex gap-6 items-center text-gray-500 font-semibold h-24'
               }
             >
-              <ChatCircleText className='w-8 h-8 ' /> Chat
+              <Handshake className='w-8 h-8 ' />
+              propostas
             </NavLink>
           </li>
           <li className='flex items-center justify-center'>

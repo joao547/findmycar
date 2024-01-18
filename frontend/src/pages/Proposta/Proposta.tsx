@@ -1,0 +1,56 @@
+import { useEffect, useState } from 'react';
+import { api } from '../../service/api';
+import { ClientUser } from '../home/components/ConsultantProfile';
+import { ListaProposta } from './components/ListaProposta';
+
+export type PropostaCliente = {
+  idProposta: number;
+  nomeConsultor: string;
+  idConsultor: number;
+  nomeCliente: string;
+  idCliente: number;
+  valorAcordado: number;
+  dataProposta: null;
+  tipoServico: string;
+  servicoContratado: string;
+  localServico: string | null;
+  statusAtual: string;
+};
+
+export function Proposta() {
+  const [propostas, setPropostas] = useState<Array<PropostaCliente>>([]);
+  useEffect(() => {
+    async function fetchUser() {
+      const token = localStorage.getItem('@token');
+
+      const response = await api.get<ClientUser>('/api/user/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { id } = response.data;
+
+      const { data } = await api.get('/api/proposta/propostasCliente', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          idDono: id,
+          statusBuscado: 'ALL',
+        },
+      });
+
+      setPropostas(data);
+    }
+
+    fetchUser();
+  }, []);
+  return (
+    <div>
+      <section>
+        <ListaProposta propostas={propostas} />
+      </section>
+    </div>
+  );
+}
