@@ -1,19 +1,34 @@
+import FinalizarPropostaModal from '../../../components/Modal';
 import { User } from '@phosphor-icons/react';
 import { PropostaCliente } from '../components/PropostasCliente';
 import { api } from '../../../service/api';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 type ListaPropostaProps = {
   propostas: PropostaCliente[];
   onOptionClicked?: () => void;
+  fetchClientePropostas?: () => Promise<void>;
 };
 
 export function ListaProposta({
   propostas,
   onOptionClicked,
+  fetchClientePropostas,
 }: ListaPropostaProps) {
   const { tipo } = JSON.parse(localStorage.getItem('@user') as string);
   const token = localStorage.getItem('@token');
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedProposta, setSelectedProposta] = useState<PropostaCliente>();
+
+  const [comment, setComment] = useState('');
+  const [grade, setGrade] = useState(0);
+
+  function handleFinishClicked(prop: PropostaCliente) {
+    setIsOpen(true);
+    setSelectedProposta(prop);
+  }
 
   async function handleAcceptDeal(idProposta: number) {
     try {
@@ -57,6 +72,31 @@ export function ListaProposta({
 
         onOptionClicked();
         toast.success('Proposta Recusada com Sucesso!!');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleAvaliateConsultant() {
+    try {
+      if (fetchClientePropostas) {
+        await api.post(
+          '/api/proposta/finalizar',
+          {
+            idProposta: selectedProposta?.idProposta,
+            nota: grade,
+            comentario: comment,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setIsOpen(false);
+        await fetchClientePropostas();
+        toast.success('Serviço finalizado com sucesso');
       }
     } catch (error) {
       console.log(error);
@@ -131,10 +171,53 @@ export function ListaProposta({
                     </button>
                   </div>
                 )}
+                {tipo === 'CLIENTE' && proposta.statusAtual === 'ACEITO' && (
+                  <button
+                    className='w-full bg-orange-500 rounded-md text-white h-10 font-bold mt-4'
+                    onClick={() => handleFinishClicked(proposta)}
+                  >
+                    Finalizar
+                  </button>
+                )}
               </li>
             ))}
           </ul>
         </div>
+        {selectedProposta && (
+          <FinalizarPropostaModal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+          >
+            <section className='p-4'>
+              <h1 className='text-1xl font-medium'>Finalizar serviço: </h1>
+              <div className='mt-4 w-full h-full flex flex-col gap-4'>
+                <div>
+                  <p>De uma nota para o consultor</p>
+                  <input
+                    onChange={(e) => setGrade(Number(e.target.value))}
+                    type='number'
+                    min='0'
+                    max='5'
+                    className='border pl-2 rounded-md'
+                  />
+                </div>
+                <div>
+                  <p>Deixe um comentario</p>
+                  <textarea
+                    className='border w-full p-2'
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                </div>
+                <button
+                  className='bg-orange-500 h-10 rounded-md text-white'
+                  onClick={handleAvaliateConsultant}
+                >
+                  Enviar Avaliação
+                </button>
+              </div>
+            </section>
+          </FinalizarPropostaModal>
+        )}
       </div>
     );
   }

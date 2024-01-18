@@ -20,38 +20,45 @@ export type PropostaCliente = {
 export default function PropostasCliente() {
   const [propostas, setPropostas] = useState<Array<PropostaCliente>>([]);
 
+  async function fetchData() {
+    const token = localStorage.getItem('@token');
+
+    const response = await api.get<ClientUser>('/api/user/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { id } = response.data;
+
+    const { data } = await api.get('/api/proposta/propostasCliente', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        idDono: id,
+        statusBuscado: 'ALL',
+      },
+    });
+
+    setPropostas(data);
+  }
+
   useEffect(() => {
-    async function fetchUser() {
-      const token = localStorage.getItem('@token');
+    const fetchDataAsync = async () => {
+      await fetchData();
+    };
 
-      const response = await api.get<ClientUser>('/api/user/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const { id } = response.data;
-
-      const { data } = await api.get('/api/proposta/propostasCliente', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          idDono: id,
-          statusBuscado: 'ALL',
-        },
-      });
-
-      setPropostas(data);
-    }
-
-    fetchUser();
+    fetchDataAsync();
   }, []);
 
   return (
     <div>
       <section>
-        <ListaProposta propostas={propostas} />
+        <ListaProposta
+          propostas={propostas}
+          fetchClientePropostas={fetchData}
+        />
       </section>
     </div>
   );

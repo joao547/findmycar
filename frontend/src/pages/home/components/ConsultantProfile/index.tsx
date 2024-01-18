@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CurrencyDollar } from '@phosphor-icons/react';
+import { CurrencyDollar, Star } from '@phosphor-icons/react';
 import CreateDealModal from '../../../../components/Modal';
 import ConsultantRate from '../ConsultantRate';
 import { Consultant } from '../clientHome/ClientHome';
@@ -132,7 +132,10 @@ export default function ConsultantProfile({
             <CurrencyDollar size={24} />
           </section>
 
-          <ConsultantRate />
+          <div className='flex items-center mt-2'>
+            <Star className='text-yellow-700' />
+            <p>{consultant.mediaNota}</p>
+          </div>
 
           <button
             onClick={handleOpenModal}
