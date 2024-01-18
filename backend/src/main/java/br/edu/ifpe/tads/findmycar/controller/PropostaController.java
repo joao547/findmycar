@@ -57,4 +57,14 @@ public class PropostaController {
         return new ResponseEntity<>(propostaRetornoDTOS, HttpStatus.OK);
     }
 
+    @PostMapping("/finalizar")
+    public ResponseEntity<Void> finalizarProposta(
+            @RequestBody FinalizarPropostaDTO dto) {
+
+        this.propostaService.finalizarProposta(dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

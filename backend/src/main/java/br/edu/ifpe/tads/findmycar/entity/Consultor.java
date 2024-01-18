@@ -66,8 +66,7 @@ public class Consultor extends Usuario {
     @Cascade(CascadeType.ALL)
     @JsonIgnore
     private Set<Proposta> propostas;
-
-
+    private double nota;
     public Set<ServicosBuscador> getServicosBuscador() {
         return servicosBuscador;
     }
@@ -98,6 +97,14 @@ public class Consultor extends Usuario {
 
     public void setPrecoServicoMecanico(double precoServicoMecanico) {
         this.precoServicoMecanico = precoServicoMecanico;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
     }
 
     public Set<Local> getLocais() {
