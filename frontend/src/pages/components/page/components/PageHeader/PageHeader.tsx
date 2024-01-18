@@ -33,7 +33,7 @@ export function PageHeader() {
           <Bell size={32} />
         </button>
 
-        <ImagemBase64 base64String={base64String} />
+        <ImagemBase64 base64String={base64String as string} />
       </div>
     </header>
   );

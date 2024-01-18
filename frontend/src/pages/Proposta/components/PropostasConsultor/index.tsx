@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRef, useState } from 'react';
-import { PropostaCliente } from '../../Proposta';
+import { PropostaCliente } from '../../components/PropostasCliente';
 import { ClientUser } from '../../../home/components/ConsultantProfile';
 import { api } from '../../../../service/api';
 import { GeneralOption } from '../../../Login/data/signupMultiStepSelectOptions';

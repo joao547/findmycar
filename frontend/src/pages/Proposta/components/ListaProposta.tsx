@@ -1,5 +1,5 @@
 import { User } from '@phosphor-icons/react';
-import { PropostaCliente } from '../Proposta';
+import { PropostaCliente } from '../components/PropostasCliente';
 import { api } from '../../../service/api';
 import { toast } from 'react-toastify';
 

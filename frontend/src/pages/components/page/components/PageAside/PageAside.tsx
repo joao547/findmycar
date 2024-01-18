@@ -10,7 +10,10 @@ import { NavLink } from 'react-router-dom';
 
 export function PageAside() {
   return (
-    <aside className='bg-white w-[18rem] h-screen flex flex-col items-center p-4 shadow-2xl'>
+    <aside
+      className='bg-white w-[18rem] h-screen flex flex-col items-center p-4 shadow-2xl 
+      min-h-screen'
+    >
       <img src={logoImg} alt='logo' className='w-28' />
       <nav className='mt-16 w-full'>
         <ul className='w-full'>
