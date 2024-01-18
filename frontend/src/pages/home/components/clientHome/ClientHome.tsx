@@ -103,8 +103,6 @@ export function ClientHome() {
       .getValue()
       .map((opt: GeneralOption) => opt.value);
 
-    console.log(buscadorParams, carroMarcasParams);
-
     const queryParams: QueryParams = {
       tipoConsultor: isChecked ? 'mecanico' : 'buscador',
       servicoBuscador:
