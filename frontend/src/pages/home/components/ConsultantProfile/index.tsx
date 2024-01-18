@@ -6,6 +6,7 @@ import { Consultant } from '../clientHome/ClientHome';
 import Select from 'react-select';
 import { api } from '../../../../service/api';
 import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export type ClientUser = {
   id: number;
@@ -100,6 +101,7 @@ export default function ConsultantProfile({
       });
 
       setIsOpen(false);
+      toast.success('Proposta realizada com sucesso!!');
     } catch (error) {
       console.log(error);
     }
