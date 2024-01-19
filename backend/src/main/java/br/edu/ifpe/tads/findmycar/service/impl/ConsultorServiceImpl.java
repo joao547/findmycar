@@ -74,7 +74,7 @@ public class ConsultorServiceImpl implements ConsultorService {
                     null,
                     consultor.getServicosBuscador(),
                     null,
-                    5L,
+                    (long) consultor.getNota(),
                     consultor.getPrecoServicoBuscador(),
                     recuperarArquivo(consultor.getFotoPerfil())
             )).toList();
@@ -86,7 +86,7 @@ public class ConsultorServiceImpl implements ConsultorService {
                     consultor.getLocais(),
                     null,
                     consultor.getCarroMarcas(),
-                    5L,
+                    (long) consultor.getNota(),
                     consultor.getPrecoServicoMecanico(),
                     recuperarArquivo(consultor.getFotoPerfil())
             )).toList();
